@@ -1,27 +1,11 @@
-import React from "react";
-import "./Navbar.css";
+import React from 'react';
+import logo from '../public/cinecue-logo.png'; // adjust path if needed
 
-const Navbar = ({ onSearch }) => {
+const Navbar = () => {
   return (
-    <nav className="navbar">
-      <div className="navbar-left">
-        <span className="logo">🎬 CineCue</span>
-        <ul className="nav-links">
-          <li>Home</li>
-          <li>Movies</li>
-          <li>TV Shows</li>
-          <li>My List</li>
-        </ul>
-      </div>
-
-      <div className="navbar-right">
-        <input
-          type="text"
-          placeholder="Search movies..."
-          onChange={(e) => onSearch(e.target.value)}
-        />
-      </div>
-    </nav>
+    <div className="navbar">
+      <img src={logo} alt="CineCue Logo" style={{ height: '50px' }} />
+    </div>
   );
 };
 
