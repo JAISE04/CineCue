@@ -29,6 +29,7 @@ const MovieCard = ({ title, poster, preview, download, year, rating, genre, dura
       <div className="movie-info">
         <h3 className="hover-title">{title}</h3>
         {genre && <p className="hover-genre">{genre}</p>}
+        }
         {duration && (
           <div className="hover-duration">
             <Clock size={14} />
