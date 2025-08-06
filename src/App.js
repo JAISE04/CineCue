@@ -30,6 +30,10 @@ const MovieCard = ({ title, poster, preview, download }) => (
   </div>
 );
 
+function App() {
+  const [movies, setMovies] = useState([]);
+  const [query, setQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Handle navbar scroll effect
@@ -41,9 +45,6 @@ const MovieCard = ({ title, poster, preview, download }) => (
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-function App() {
-  const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState("");
 
   useEffect(() => {
     Papa.parse(SHEET_CSV_URL, {
@@ -64,7 +65,6 @@ function App() {
   const filteredMovies = movies.filter((movie) =>
     movie.title?.toLowerCase().includes(query.toLowerCase())
   );
-const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className="app">
