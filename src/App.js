@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
 import "./App.css";
 import { Play, Download,Search} from "lucide-react";
-import logo from "./assests/cinecue-logo-transparent.png";
+import logo from "./assets/cinecue-logo-transparent.png";
 
 
 
