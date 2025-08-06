@@ -30,7 +30,17 @@ const MovieCard = ({ title, poster, preview, download }) => (
   </div>
 );
 
+  const [isScrolled, setIsScrolled] = useState(false);
 
+  // Handle navbar scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 function App() {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
@@ -58,7 +68,7 @@ const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className="app">
-      <nav className="navbar">
+      <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
   <div className="navbar-left">
     <a href="/" className="logo">
       <img src={logo} alt="CineCue Logo" />
@@ -97,13 +107,26 @@ const [isFocused, setIsFocused] = useState(false);
 </nav>
 
 
-      <h1 className="section-title">Latest Movies</h1>
+      <h1 className="section-title">
+        {query ? `Search Results for "${query}"` : "Latest Movies"}
+      </h1>
 
       <div className="grid">
         {filteredMovies.map((movie, index) => (
           <MovieCard key={index} {...movie} />
         ))}
       </div>
+      
+      {filteredMovies.length === 0 && query && (
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '3rem', 
+          color: '#999',
+          fontSize: '1.1rem'
+        }}>
+          No movies found for "{query}"
+        </div>
+      )}
     </div>
   );
 }
