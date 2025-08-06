@@ -16,12 +16,16 @@ const MovieCard = ({ title, poster, preview, download }) => (
   <div className="movie-icons">
     <div className="movie-icons-row">
       <a href={preview} target="_blank" rel="noreferrer" title="Watch">
-        <Play className="icon" />
+        <div className="icon">
+          <Play size={20} />
+        </div>
       </a>
     </div>
     <div className="movie-icons-row">
       <a href={download} target="_blank" rel="noreferrer" title="Download">
-        <Download className="icon" />
+        <div className="icon">
+          <Download size={20} />
+        </div>
       </a>
     </div>
   </div>
