@@ -147,7 +147,13 @@ function App() {
   }, []);
 
   // Get unique values for filters
-  const genres = [...new Set(movies.map(movie => movie.genre).filter(Boolean))];
+  const genres = [...new Set(
+  movies
+    .flatMap(movie => movie.genre ? movie.genre.split(',') : [])
+    .map(genre => genre.trim())
+    .filter(Boolean)
+)];
+
   const years = [...new Set(movies.map(movie => movie.year).filter(Boolean))].sort((a, b) => b - a);
 
   // Filter and sort movies
@@ -160,13 +166,17 @@ function App() {
   });
 
   // Sort movies
-  if (sortBy === 'title') {
-    filteredMovies.sort((a, b) => a.title?.localeCompare(b.title) || 0);
-  } else if (sortBy === 'year') {
-    filteredMovies.sort((a, b) => (b.year || 0) - (a.year || 0));
-  } else if (sortBy === 'rating') {
-    filteredMovies.sort((a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0));
-  }
+  if (sortBy === 'Title (A-Z)') {
+  filteredMovies.sort((a, b) => a.title?.localeCompare(b.title) || 0);
+} else if (sortBy === 'Rating (High → Low)') {
+  filteredMovies.sort((a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0));
+} else if (sortBy === 'Year (Newest)') {
+  filteredMovies.sort((a, b) => (b.year || 0) - (a.year || 0));
+} else if (sortBy === 'Recently Uploaded') {
+  // Assuming the original order from the CSV is most recent first
+  filteredMovies = [...filteredMovies]; // Keep original order (most recent top)
+}
+
 
   const LoadingCard = () => (
     <div className="movie-card loading">
@@ -180,7 +190,7 @@ function App() {
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="navbar-left">
           <a href="/" className="logo">
-            <img src={logo} alt="CineCue Logo" />
+            <img src={logo} height={50} alt="CineCue Logo" />
           </a>
           <ul className="nav-links">
             <li onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Home</li>
@@ -273,11 +283,12 @@ function App() {
             
             <FilterDropdown
               label="Sort By"
-              options={['Title', 'Year', 'Rating']}
+              options={['Title (A-Z)', 'Rating (High → Low)', 'Year (Newest)', 'Recently Uploaded']}
               value={sortBy}
               onChange={setSortBy}
               icon={Filter}
             />
+
           </div>
           
           <div className="view-toggle">
