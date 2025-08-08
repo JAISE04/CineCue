@@ -7,9 +7,8 @@ import PageHeader from "../components/PageHeader";
 
 const SHEET_CSV_URL = process.env.REACT_APP_SHEET_CSV_URL;
 
-const Movies = () => {
+const Movies = ({ globalSearchQuery = "" }) => {
   const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState("");
   const [viewMode, setViewMode] = useState("grid");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
@@ -32,14 +31,22 @@ const Movies = () => {
             rating: row["Rating"] || row["IMDb Rating"],
             genre: row["Genre"] || row["Genres"],
             duration: row["Duration"] || row["Runtime"],
-            type: row["Type"] || "movie", // Assuming there's a type field
+            type: row["Type"] || "movie",
           }))
-          .filter((item) => item.type?.toLowerCase() === "movie" || !item.type); // Filter only movies
+          .filter((item) => item.type?.toLowerCase() === "movie" || !item.type);
         setMovies(movieList);
         setIsLoading(false);
       },
     });
   }, []);
+
+  // Clear filters when search is active
+  useEffect(() => {
+    if (globalSearchQuery) {
+      setSelectedGenre("");
+      setSelectedYear("");
+    }
+  }, [globalSearchQuery]);
 
   // Get unique values for filters
   const genres = [
@@ -57,9 +64,9 @@ const Movies = () => {
 
   // Filter and sort movies
   let filteredMovies = movies.filter((movie) => {
-    const matchesSearch = movie.title
-      ?.toLowerCase()
-      .includes(query.toLowerCase());
+    const matchesSearch = globalSearchQuery
+      ? movie.title?.toLowerCase().includes(globalSearchQuery.toLowerCase())
+      : true;
     const matchesGenre =
       !selectedGenre ||
       movie.genre?.toLowerCase().includes(selectedGenre.toLowerCase());
@@ -81,17 +88,26 @@ const Movies = () => {
     filteredMovies = [...filteredMovies];
   }
 
+  const getPageTitle = () => {
+    if (globalSearchQuery) return "Search Results";
+    return "Movies";
+  };
+
+  const getPageSubtitle = () => {
+    if (globalSearchQuery) return `Results for "${globalSearchQuery}"`;
+    return "Discover amazing movies from every genre";
+  };
+
   return (
     <>
       <PageHeader
-        title="Movies"
-        subtitle="Discover amazing movies from every genre"
-        itemCount={movies.length}
+        title={getPageTitle()}
+        subtitle={getPageSubtitle()}
+        itemCount={globalSearchQuery ? filteredMovies.length : movies.length}
       />
 
       <ControlsSection
-        query={query}
-        setQuery={setQuery}
+        query={globalSearchQuery}
         filteredMoviesCount={filteredMovies.length}
         genres={genres}
         years={years}
@@ -104,6 +120,8 @@ const Movies = () => {
         viewMode={viewMode}
         setViewMode={setViewMode}
         pageType="movies"
+        hideSearch={true}
+        isSearchActive={!!globalSearchQuery}
       />
 
       <MoviesContainer
@@ -112,7 +130,9 @@ const Movies = () => {
         isLoading={isLoading}
       />
 
-      {filteredMovies.length === 0 && query && <NoResults query={query} />}
+      {filteredMovies.length === 0 && globalSearchQuery && (
+        <NoResults query={globalSearchQuery} />
+      )}
     </>
   );
 };
