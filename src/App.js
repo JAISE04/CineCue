@@ -111,7 +111,7 @@ function App() {
   const [viewMode, setViewMode] = useState('grid');
   const [selectedGenre, setSelectedGenre] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState('Year (Newest)');
   const [isLoading, setIsLoading] = useState(true);
 
   // Handle navbar scroll effect
