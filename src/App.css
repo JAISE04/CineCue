@@ -58,11 +58,13 @@ body {
   padding: 0;
 }
 
+
+
 .nav-links li {
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.1s ease;
   position: relative;
 }
 
@@ -741,10 +743,6 @@ body {
 
   .logo img {
     height: 28px;
-  }
-
-  .nav-links {
-    display: none;
   }
 
   .navbar-icons {
