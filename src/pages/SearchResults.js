@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
-import HeroSection from "../components/HeroSection";
+import PageHeader from "../components/PageHeader";
 import ControlsSection from "../components/ControlSection";
 import MoviesContainer from "../components/MoviesContainer";
 import NoResults from "../components/NoResults";
 
 const SHEET_CSV_URL = process.env.REACT_APP_SHEET_CSV_URL;
 
-const Home = ({ globalSearchQuery = "" }) => {
-  const [movies, setMovies] = useState([]);
+const SearchResults = ({ searchQuery, onClearSearch }) => {
+  const [allContent, setAllContent] = useState([]);
   const [viewMode, setViewMode] = useState("grid");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
@@ -21,7 +21,7 @@ const Home = ({ globalSearchQuery = "" }) => {
       download: true,
       header: true,
       complete: (results) => {
-        const movieList = results.data.map((row) => ({
+        const contentList = results.data.map((row) => ({
           title: row["Clean Title"],
           poster: row["Poster"],
           preview: row["Preview Link"],
@@ -30,70 +30,69 @@ const Home = ({ globalSearchQuery = "" }) => {
           rating: row["Rating"] || row["IMDb Rating"],
           genre: row["Genre"] || row["Genres"],
           duration: row["Duration"] || row["Runtime"],
+          type: row["Type"] || "movie",
         }));
-        setMovies(movieList);
+        setAllContent(contentList);
         setIsLoading(false);
       },
     });
   }, []);
 
-  // Clear filters when search is active
-  useEffect(() => {
-    if (globalSearchQuery) {
-      setSelectedGenre("");
-      setSelectedYear("");
-    }
-  }, [globalSearchQuery]);
-
   // Get unique values for filters
   const genres = [
     ...new Set(
-      movies
-        .flatMap((movie) => (movie.genre ? movie.genre.split(",") : []))
+      allContent
+        .flatMap((item) => (item.genre ? item.genre.split(",") : []))
         .map((genre) => genre.trim())
         .filter(Boolean)
     ),
   ];
 
   const years = [
-    ...new Set(movies.map((movie) => movie.year).filter(Boolean)),
+    ...new Set(allContent.map((item) => item.year).filter(Boolean)),
   ].sort((a, b) => b - a);
 
-  // Filter and sort movies
-  let filteredMovies = movies.filter((movie) => {
-    const matchesSearch = globalSearchQuery
-      ? movie.title?.toLowerCase().includes(globalSearchQuery.toLowerCase())
+  // Filter and sort content
+  let filteredContent = allContent.filter((item) => {
+    const matchesSearch = searchQuery
+      ? item.title?.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
     const matchesGenre =
       !selectedGenre ||
-      movie.genre?.toLowerCase().includes(selectedGenre.toLowerCase());
-    const matchesYear = !selectedYear || movie.year === selectedYear;
+      item.genre?.toLowerCase().includes(selectedGenre.toLowerCase());
+    const matchesYear = !selectedYear || item.year === selectedYear;
 
     return matchesSearch && matchesGenre && matchesYear;
   });
 
-  // Sort movies
+  // Sort content
   if (sortBy === "Title (A-Z)") {
-    filteredMovies.sort((a, b) => a.title?.localeCompare(b.title) || 0);
+    filteredContent.sort((a, b) => a.title?.localeCompare(b.title) || 0);
   } else if (sortBy === "Rating (High → Low)") {
-    filteredMovies.sort(
+    filteredContent.sort(
       (a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0)
     );
   } else if (sortBy === "Year (Newest)") {
-    filteredMovies.sort((a, b) => (b.year || 0) - (a.year || 0));
+    filteredContent.sort((a, b) => (b.year || 0) - (a.year || 0));
   } else if (sortBy === "Recently Uploaded") {
-    filteredMovies = [...filteredMovies];
+    filteredContent = [...filteredContent];
   }
 
   return (
     <>
-      {!globalSearchQuery && (
-        <HeroSection movieCount={movies.length} genreCount={genres.length} />
-      )}
+      <PageHeader
+        title="Search Results"
+        subtitle={
+          searchQuery
+            ? `Results for "${searchQuery}"`
+            : "Search our entire catalog"
+        }
+        itemCount={filteredContent.length}
+      />
 
       <ControlsSection
-        query={globalSearchQuery}
-        filteredMoviesCount={filteredMovies.length}
+        query={searchQuery}
+        filteredMoviesCount={filteredContent.length}
         genres={genres}
         years={years}
         selectedGenre={selectedGenre}
@@ -104,21 +103,21 @@ const Home = ({ globalSearchQuery = "" }) => {
         setSortBy={setSortBy}
         viewMode={viewMode}
         setViewMode={setViewMode}
+        pageType="search"
         hideSearch={true}
-        isSearchActive={!!globalSearchQuery}
       />
 
       <MoviesContainer
-        movies={filteredMovies}
+        movies={filteredContent}
         viewMode={viewMode}
         isLoading={isLoading}
       />
 
-      {filteredMovies.length === 0 && globalSearchQuery && (
-        <NoResults query={globalSearchQuery} />
+      {filteredContent.length === 0 && searchQuery && (
+        <NoResults query={searchQuery} />
       )}
     </>
   );
 };
 
-export default Home;
+export default SearchResults;

@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Search, Bell, User, Settings } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Search, Bell, User, Settings, X } from "lucide-react";
 import logo from "../assets/cinecue-logo-transparent.png";
 
-const Navbar = () => {
+const Navbar = ({ onSearch, searchQuery, onClearSearch }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [query, setQuery] = useState("");
+  const [localQuery, setLocalQuery] = useState(searchQuery || "");
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Sync local query with global search query
+  useEffect(() => {
+    setLocalQuery(searchQuery || "");
+  }, [searchQuery]);
 
   // Handle navbar scroll effect
   useEffect(() => {
@@ -23,54 +29,107 @@ const Navbar = () => {
     return location.pathname === path;
   };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (localQuery.trim()) {
+      onSearch(localQuery.trim());
+      setIsFocused(false);
+
+      // Navigate to search results page if we're not on a searchable page
+      if (location.pathname !== "/" && location.pathname !== "/movies") {
+        navigate("/search");
+      }
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setLocalQuery(value);
+
+    // Real-time search on Home and Movies pages
+    if (location.pathname === "/" || location.pathname === "/movies") {
+      onSearch(value);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setLocalQuery("");
+    onClearSearch();
+    setIsFocused(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearchSubmit(e);
+    } else if (e.key === "Escape") {
+      setIsFocused(false);
+    }
+  };
+
   return (
     <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
       <div className="navbar-left">
-        <Link to="/" className="logo">
+        <Link to="/" className="logo" onClick={onClearSearch}>
           <img src={logo} height={50} alt="CineCue Logo" />
         </Link>
         <ul className="nav-links">
           <li className={isActiveRoute("/") ? "active" : ""}>
-            <Link to="/">Home</Link>
+            <Link to="/" onClick={onClearSearch}>
+              Home
+            </Link>
           </li>
           <li className={isActiveRoute("/movies") ? "active" : ""}>
-            <Link to="/movies">Movies</Link>
+            <Link to="/movies" onClick={onClearSearch}>
+              Movies
+            </Link>
           </li>
           <li className={isActiveRoute("/tv-shows") ? "active" : ""}>
-            <Link to="/tv-shows">TV Shows</Link>
+            <Link to="/tv-shows" onClick={onClearSearch}>
+              TV Shows
+            </Link>
           </li>
           <li className={isActiveRoute("/my-list") ? "active" : ""}>
-            <Link to="/my-list">My List</Link>
+            <Link to="/my-list" onClick={onClearSearch}>
+              My List
+            </Link>
           </li>
         </ul>
       </div>
 
       <div className="navbar-right">
-        <div className={`search-container ${isFocused ? "expanded" : ""}`}>
-          <button
-            className="search-icon"
-            onClick={() => setIsFocused((prev) => !prev)}
-          >
-            <Search size={20} strokeWidth={2.5} color="white" />
-          </button>
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Search movies..."
-            autoFocus={isFocused}
-            onFocus={() => setIsFocused(true)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                setIsFocused(false);
-                // TODO: Handle global search across pages
-              }
-            }}
-            style={{ width: isFocused ? "200px" : "0px" }}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-          />
-        </div>
+        <form onSubmit={handleSearchSubmit} className="search-form">
+          <div className={`search-container ${isFocused ? "expanded" : ""}`}>
+            <button
+              type="button"
+              className="search-icon"
+              onClick={() => setIsFocused((prev) => !prev)}
+            >
+              <Search size={20} strokeWidth={2.5} color="white" />
+            </button>
+
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search movies..."
+              value={localQuery}
+              onChange={handleSearchChange}
+              onFocus={() => setIsFocused(true)}
+              onKeyDown={handleKeyDown}
+              onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+              style={{ width: isFocused ? "200px" : "0px" }}
+            />
+
+            {localQuery && isFocused && (
+              <button
+                type="button"
+                className="search-clear"
+                onClick={handleClearSearch}
+              >
+                <X size={16} color="white" />
+              </button>
+            )}
+          </div>
+        </form>
 
         <div className="navbar-icons">
           <Bell size={20} className="nav-icon" />
