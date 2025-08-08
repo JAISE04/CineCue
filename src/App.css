@@ -18,7 +18,7 @@ body {
   top: 0;
   width: 100%;
   z-index: 1000;
-  background: linear-gradient(180deg, rgba(0,0,0,0.7) 10%, transparent);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, transparent);
   padding: 8px 4%;
   display: flex;
   justify-content: space-between;
@@ -71,7 +71,7 @@ body {
 }
 
 .nav-links li::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -4px;
   left: 0;
@@ -480,13 +480,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.8));
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.8));
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   color: #fff;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 /* ─── Hover Overlay ─── */
@@ -496,7 +496,11 @@ body {
   left: 0;
   height: 100%;
   width: 100%;
-  background: linear-gradient(135deg, rgba(229, 9, 20, 0.9), rgba(0, 0, 0, 0.8));
+  background: linear-gradient(
+    135deg,
+    rgba(229, 9, 20, 0.9),
+    rgba(0, 0, 0, 0.8)
+  );
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -604,7 +608,8 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -692,101 +697,101 @@ body {
   .hero-title {
     font-size: 2.5rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1.2rem;
   }
-  
+
   .hero-stats {
     gap: 2rem;
   }
-  
+
   .stat-number {
     font-size: 2rem;
   }
-  
+
   .controls-section {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
-  
+
   .controls-right {
     justify-content: space-between;
   }
-  
+
   .filters {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-  
+
   .filter-button {
     min-width: 100px;
     font-size: 13px;
     padding: 6px 12px;
   }
-  
+
   .navbar {
     padding: 8px 3%;
   }
-  
+
   .navbar-left {
     gap: 1rem;
   }
-  
+
   .logo img {
     height: 28px;
   }
-  
+
   .nav-links {
     display: none;
   }
-  
+
   .navbar-icons {
     gap: 0.5rem;
   }
-  
+
   .section-title {
     font-size: 1.2rem;
   }
-  
+
   .movies-container.grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 8px;
   }
-  
+
   .movies-container {
     padding: 0 3% 2rem;
   }
-  
+
   .movie-title {
     font-size: 12px;
     padding: 6px 8px;
   }
-  
+
   .search-container.expanded .search-input {
     width: 180px;
     right: 35px;
   }
-  
+
   .icon {
     padding: 10px;
     width: 40px;
     height: 40px;
   }
-  
+
   .movie-icons {
     gap: 12px;
   }
-  
+
   .movie-icons-row {
     gap: 10px;
   }
-  
+
   .footer {
     padding: 2rem 3% 1rem;
   }
-  
+
   .footer-content {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -797,72 +802,72 @@ body {
   .hero-section {
     height: 50vh;
   }
-  
+
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1rem;
   }
-  
+
   .hero-stats {
     gap: 1.5rem;
   }
-  
+
   .stat-number {
     font-size: 1.5rem;
   }
-  
+
   .stat-label {
     font-size: 0.8rem;
   }
-  
+
   .navbar {
     padding: 6px 2%;
   }
-  
+
   .logo img {
     height: 24px;
   }
-  
+
   .section-title {
     font-size: 1.1rem;
   }
-  
+
   .movies-container.grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 6px;
   }
-  
+
   .movies-container {
     padding: 0 2% 1.5rem;
   }
-  
+
   .movie-title {
     font-size: 11px;
     padding: 4px 6px;
   }
-  
+
   .search-container.expanded .search-input {
     width: 150px;
     font-size: 13px;
   }
-  
+
   .icon {
     padding: 8px;
     width: 36px;
     height: 36px;
   }
-  
+
   .movie-icons {
     gap: 8px;
   }
-  
+
   .movie-icons-row {
     gap: 8px;
   }
-  
+
   .footer {
     padding: 1.5rem 2% 1rem;
   }
@@ -888,12 +893,108 @@ html {
   .movie-card {
     border: 1px solid #666;
   }
-  
+
   .movie-title {
     background: rgba(0, 0, 0, 0.9);
   }
-  
+
   .filter-button {
     border-color: #666;
+  }
+}
+
+.page-header {
+  position: relative;
+  height: 40vh;
+  background: linear-gradient(135deg, #e50914 0%, #8b0000 50%, #141414 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-top: 70px;
+}
+
+.page-header-content {
+  text-align: center;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 2rem;
+}
+
+.page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+.page-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.page-header-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(transparent, #141414);
+}
+
+/* ─── Active Navigation Link ─── */
+.nav-links li.active {
+  color: #e50914;
+}
+
+.nav-links li.active::after {
+  width: 100%;
+}
+
+.nav-links a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  color: #b3b3b3;
+}
+
+/* ─── Mobile Responsive for Page Header ─── */
+@media (max-width: 768px) {
+  .page-header {
+    height: 30vh;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    height: 25vh;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.9rem;
   }
 }
