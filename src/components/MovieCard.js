@@ -23,12 +23,15 @@ const MovieCard = ({
     )}
 
     {year && <div className="movie-year">{year}</div>}
+    }
 
     <div className="movie-hover">
       <div className="movie-info">
         <h3 className="hover-title">{title}</h3>
         {genre && <p className="hover-genre">{genre}</p>}
+        }
         {language && <p className="hover-genre">{language}</p>}
+        }
 
         {duration && (
           <div className="hover-duration">
