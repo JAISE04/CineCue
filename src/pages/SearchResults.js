@@ -12,6 +12,7 @@ const SearchResults = ({ searchQuery, onClearSearch }) => {
   const [viewMode, setViewMode] = useState("grid");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState("");
   const [sortBy, setSortBy] = useState("Year (Newest)");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -37,6 +38,7 @@ const SearchResults = ({ searchQuery, onClearSearch }) => {
           year: row["Year"] || row["Release Year"],
           rating: row["Rating"] || row["IMDb Rating"],
           genre: row["Genre"] || row["Genres"],
+          language: row["Language"] || row["Languages"],
           duration: row["Duration"] || row["Runtime"],
           type: row["Type"] || "movie",
         }));
@@ -65,6 +67,15 @@ const SearchResults = ({ searchQuery, onClearSearch }) => {
     ...new Set(allContent.map((item) => item.year).filter(Boolean)),
   ].sort((a, b) => b - a);
 
+  const languages = [
+    ...new Set(
+      allContent
+        .flatMap((item) => (item.language ? item.language.split(",") : []))
+        .map((language) => language.trim())
+        .filter(Boolean)
+    ),
+  ];
+
   // Filter and sort content
   let filteredContent = allContent.filter((item) => {
     const matchesSearch = searchQuery
@@ -74,8 +85,11 @@ const SearchResults = ({ searchQuery, onClearSearch }) => {
       !selectedGenre ||
       item.genre?.toLowerCase().includes(selectedGenre.toLowerCase());
     const matchesYear = !selectedYear || item.year === selectedYear;
+    const matchesLanguage =
+      !selectedLanguage ||
+      item.language?.toLowerCase().includes(selectedLanguage.toLowerCase());
 
-    return matchesSearch && matchesGenre && matchesYear;
+    return matchesSearch && matchesGenre && matchesYear && matchesLanguage;
   });
 
   // Sort content
@@ -108,10 +122,13 @@ const SearchResults = ({ searchQuery, onClearSearch }) => {
         filteredMoviesCount={filteredContent.length}
         genres={genres}
         years={years}
+        languages={languages}
         selectedGenre={selectedGenre}
         setSelectedGenre={setSelectedGenre}
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
+        selectedLanguage={selectedLanguage}
+        setSelectedLanguage={setSelectedLanguage}
         sortBy={sortBy}
         setSortBy={setSortBy}
         viewMode={viewMode}

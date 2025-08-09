@@ -1,5 +1,5 @@
 import React from "react";
-import { Filter, Calendar, Grid, List } from "lucide-react";
+import { Filter, Calendar, Grid, List, Globe } from "lucide-react";
 import FilterDropdown from "./FilterDropdown";
 
 const ControlsSection = ({
@@ -8,10 +8,13 @@ const ControlsSection = ({
   filteredMoviesCount,
   genres,
   years,
+  languages,
   selectedGenre,
   setSelectedGenre,
   selectedYear,
   setSelectedYear,
+  selectedLanguage,
+  setSelectedLanguage,
   sortBy,
   setSortBy,
   viewMode,
@@ -58,6 +61,14 @@ const ControlsSection = ({
             value={selectedYear}
             onChange={setSelectedYear}
             icon={Calendar}
+          />
+
+          <FilterDropdown
+            label="Language"
+            options={languages}
+            value={selectedLanguage}
+            onChange={setSelectedLanguage}
+            icon={Globe}
           />
 
           <FilterDropdown

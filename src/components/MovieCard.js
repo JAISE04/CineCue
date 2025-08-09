@@ -9,6 +9,7 @@ const MovieCard = ({
   year,
   rating,
   genre,
+  language,
   duration,
 }) => (
   <div className="movie-card">
@@ -27,6 +28,7 @@ const MovieCard = ({
       <div className="movie-info">
         <h3 className="hover-title">{title}</h3>
         {genre && <p className="hover-genre">{genre}</p>}
+        {language && <p className="hover-genre">{language}</p>}
 
         {duration && (
           <div className="hover-duration">
