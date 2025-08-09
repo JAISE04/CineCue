@@ -11,42 +11,32 @@ import SearchResults from "./pages/SearchResults";
 
 function App() {
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
-  const [isSearchActive, setIsSearchActive] = useState(false);
 
+  // Handler for search in Navbar
   const handleGlobalSearch = (query) => {
     setGlobalSearchQuery(query);
-    setIsSearchActive(query.length > 0);
   };
 
   const clearSearch = () => {
     setGlobalSearchQuery("");
-    setIsSearchActive(false);
   };
 
   return (
     <Router>
+      <Navbar
+        onSearch={handleGlobalSearch}
+        searchQuery={globalSearchQuery}
+        onClearSearch={clearSearch}
+      />
       <div className="app">
-        <Navbar
-          onSearch={handleGlobalSearch}
-          searchQuery={globalSearchQuery}
-          onClearSearch={clearSearch}
-        />
         <Routes>
           <Route
             path="/"
-            element={
-              <Home
-                globalSearchQuery={isSearchActive ? globalSearchQuery : ""}
-              />
-            }
+            element={<Home globalSearchQuery={globalSearchQuery} />}
           />
           <Route
             path="/movies"
-            element={
-              <Movies
-                globalSearchQuery={isSearchActive ? globalSearchQuery : ""}
-              />
-            }
+            element={<Movies globalSearchQuery={globalSearchQuery} />}
           />
           <Route path="/tv-shows" element={<TVShows />} />
           <Route path="/my-list" element={<MyList />} />
