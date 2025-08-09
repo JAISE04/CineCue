@@ -17,6 +17,14 @@ const Movies = ({ globalSearchQuery = "" }) => {
 
   useEffect(() => {
     setIsLoading(true);
+    
+    if (!SHEET_CSV_URL || SHEET_CSV_URL === "your_csv_url_here") {
+      console.warn("CSV URL not configured. Please set REACT_APP_SHEET_CSV_URL in your .env file");
+      setMovies([]);
+      setIsLoading(false);
+      return;
+    }
+
     Papa.parse(SHEET_CSV_URL, {
       download: true,
       header: true,
@@ -35,6 +43,11 @@ const Movies = ({ globalSearchQuery = "" }) => {
           }))
           .filter((item) => item.type?.toLowerCase() === "movie" || !item.type);
         setMovies(movieList);
+        setIsLoading(false);
+      },
+      error: (error) => {
+        console.error("Error parsing CSV:", error);
+        setMovies([]);
         setIsLoading(false);
       },
     });
