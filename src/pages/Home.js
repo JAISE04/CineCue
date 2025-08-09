@@ -12,6 +12,7 @@ const Home = ({ globalSearchQuery = "" }) => {
   const [viewMode, setViewMode] = useState("grid");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState("");
   const [sortBy, setSortBy] = useState("Year (Newest)");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -37,6 +38,7 @@ const Home = ({ globalSearchQuery = "" }) => {
           year: row["Year"] || row["Release Year"],
           rating: row["Rating"] || row["IMDb Rating"],
           genre: row["Genre"] || row["Genres"],
+          language: row["Language"] || row["Languages"],
           duration: row["Duration"] || row["Runtime"],
         }));
         setMovies(movieList);
@@ -55,6 +57,7 @@ const Home = ({ globalSearchQuery = "" }) => {
     if (globalSearchQuery) {
       setSelectedGenre("");
       setSelectedYear("");
+      setSelectedLanguage("");
     }
   }, [globalSearchQuery]);
 
@@ -72,6 +75,15 @@ const Home = ({ globalSearchQuery = "" }) => {
     ...new Set(movies.map((movie) => movie.year).filter(Boolean)),
   ].sort((a, b) => b - a);
 
+  const languages = [
+    ...new Set(
+      movies
+        .flatMap((movie) => (movie.language ? movie.language.split(",") : []))
+        .map((language) => language.trim())
+        .filter(Boolean)
+    ),
+  ];
+
   // Filter and sort movies
   let filteredMovies = movies.filter((movie) => {
     const matchesSearch = globalSearchQuery
@@ -81,8 +93,11 @@ const Home = ({ globalSearchQuery = "" }) => {
       !selectedGenre ||
       movie.genre?.toLowerCase().includes(selectedGenre.toLowerCase());
     const matchesYear = !selectedYear || movie.year === selectedYear;
+    const matchesLanguage =
+      !selectedLanguage ||
+      movie.language?.toLowerCase().includes(selectedLanguage.toLowerCase());
 
-    return matchesSearch && matchesGenre && matchesYear;
+    return matchesSearch && matchesGenre && matchesYear && matchesLanguage;
   });
 
   // Sort movies
@@ -109,10 +124,13 @@ const Home = ({ globalSearchQuery = "" }) => {
         filteredMoviesCount={filteredMovies.length}
         genres={genres}
         years={years}
+        languages={languages}
         selectedGenre={selectedGenre}
         setSelectedGenre={setSelectedGenre}
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
+        selectedLanguage={selectedLanguage}
+        setSelectedLanguage={setSelectedLanguage}
         sortBy={sortBy}
         setSortBy={setSortBy}
         viewMode={viewMode}
