@@ -11,16 +11,16 @@ const TVShows = ({ globalSearchQuery = "" }) => {
   const [tvShows, setTvShows] = useState([]);
   const [viewMode, setViewMode] = useState("grid");
   const [selectedGenre, setSelectedGenre] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState("");
-  const [sortBy, setSortBy] = useState("Year (Newest)");
+  const [sortBy, setSortBy] = useState("Title (A-Z)");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    
+
     if (!SHEET_CSV_URL || SHEET_CSV_URL === "your_csv_url_here") {
-      console.warn("CSV URL not configured. Please set REACT_APP_SHEET_CSV_URL in your .env file");
+      console.warn(
+        "CSV URL not configured. Please set REACT_APP_SHEET_CSV_URL in your .env file"
+      );
       setTvShows([]);
       setIsLoading(false);
       return;
@@ -32,23 +32,13 @@ const TVShows = ({ globalSearchQuery = "" }) => {
       complete: (results) => {
         const tvShowList = results.data
           .map((row) => ({
+            category: row["Category"],
             title: row["Clean Title"],
             poster: row["Poster"],
             preview: row["Preview Link"],
             download: row["Download Link"],
-            year: row["Year"] || row["Release Year"],
-            rating: row["Rating"] || row["IMDb Rating"],
-            genre: row["Genre"] || row["Genres"],
-            language: row["Language"] || row["Languages"],
-            duration: row["Duration"] || row["Runtime"],
-            type: row["Type"] || "movie",
           }))
-          .filter((item) => item.type?.toLowerCase() === "tv" || 
-                           item.type?.toLowerCase() === "series" ||
-                           item.type?.toLowerCase() === "tv show" ||
-                           item.title?.toLowerCase().includes("season") ||
-                           item.title?.toLowerCase().includes("s0") ||
-                           item.title?.toLowerCase().includes("series"));
+          .filter((item) => item.title); // only valid rows
         setTvShows(tvShowList);
         setIsLoading(false);
       },
@@ -64,61 +54,31 @@ const TVShows = ({ globalSearchQuery = "" }) => {
   useEffect(() => {
     if (globalSearchQuery) {
       setSelectedGenre("");
-      setSelectedYear("");
-      setSelectedLanguage("");
     }
   }, [globalSearchQuery]);
 
-  // Get unique values for filters
+  // Unique genres (use Category column)
   const genres = [
-    ...new Set(
-      tvShows
-        .flatMap((show) => (show.genre ? show.genre.split(",") : []))
-        .map((genre) => genre.trim())
-        .filter(Boolean)
-    ),
+    ...new Set(tvShows.map((show) => show.category).filter(Boolean)),
   ];
 
-  const years = [
-    ...new Set(tvShows.map((show) => show.year).filter(Boolean)),
-  ].sort((a, b) => b - a);
-
-  const languages = [
-    ...new Set(
-      tvShows
-        .flatMap((show) => (show.language ? show.language.split(",") : []))
-        .map((language) => language.trim())
-        .filter(Boolean)
-    ),
-  ];
-
-  // Filter and sort TV shows
+  // Filter TV shows
   let filteredTvShows = tvShows.filter((show) => {
     const matchesSearch = globalSearchQuery
       ? show.title?.toLowerCase().includes(globalSearchQuery.toLowerCase())
       : true;
     const matchesGenre =
       !selectedGenre ||
-      show.genre?.toLowerCase().includes(selectedGenre.toLowerCase());
-    const matchesYear = !selectedYear || show.year === selectedYear;
-    const matchesLanguage =
-      !selectedLanguage ||
-      show.language?.toLowerCase().includes(selectedLanguage.toLowerCase());
+      show.category?.toLowerCase() === selectedGenre.toLowerCase();
 
-    return matchesSearch && matchesGenre && matchesYear && matchesLanguage;
+    return matchesSearch && matchesGenre;
   });
 
   // Sort TV shows
   if (sortBy === "Title (A-Z)") {
     filteredTvShows.sort((a, b) => a.title?.localeCompare(b.title) || 0);
-  } else if (sortBy === "Rating (High → Low)") {
-    filteredTvShows.sort(
-      (a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0)
-    );
-  } else if (sortBy === "Year (Newest)") {
-    filteredTvShows.sort((a, b) => (b.year || 0) - (a.year || 0));
-  } else if (sortBy === "Recently Uploaded") {
-    filteredTvShows = [...filteredTvShows];
+  } else if (sortBy === "Title (Z-A)") {
+    filteredTvShows.sort((a, b) => b.title?.localeCompare(a.title) || 0);
   }
 
   const getPageTitle = () => {
@@ -143,14 +103,14 @@ const TVShows = ({ globalSearchQuery = "" }) => {
         query={globalSearchQuery}
         filteredMoviesCount={filteredTvShows.length}
         genres={genres}
-        years={years}
-        languages={languages}
+        years={[]} // not available in CSV
+        languages={[]} // not available in CSV
         selectedGenre={selectedGenre}
         setSelectedGenre={setSelectedGenre}
-        selectedYear={selectedYear}
-        setSelectedYear={setSelectedYear}
-        selectedLanguage={selectedLanguage}
-        setSelectedLanguage={setSelectedLanguage}
+        selectedYear={""}
+        setSelectedYear={() => {}}
+        selectedLanguage={""}
+        setSelectedLanguage={() => {}}
         sortBy={sortBy}
         setSortBy={setSortBy}
         viewMode={viewMode}
@@ -167,7 +127,13 @@ const TVShows = ({ globalSearchQuery = "" }) => {
       />
 
       {filteredTvShows.length === 0 && !isLoading && (
-        <div style={{ padding: "2rem 4%", textAlign: "center", minHeight: "50vh" }}>
+        <div
+          style={{
+            padding: "2rem 4%",
+            textAlign: "center",
+            minHeight: "50vh",
+          }}
+        >
           <div
             style={{
               background: "rgba(255, 255, 255, 0.1)",
@@ -178,7 +144,9 @@ const TVShows = ({ globalSearchQuery = "" }) => {
             }}
           >
             <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
-              {globalSearchQuery ? `No TV shows found for "${globalSearchQuery}"` : "No TV shows available"}
+              {globalSearchQuery
+                ? `No TV shows found for "${globalSearchQuery}"`
+                : "No TV shows available"}
             </h2>
             <p
               style={{
@@ -187,8 +155,8 @@ const TVShows = ({ globalSearchQuery = "" }) => {
                 marginBottom: "1.5rem",
               }}
             >
-              {globalSearchQuery 
-                ? "Try adjusting your search or filters" 
+              {globalSearchQuery
+                ? "Try adjusting your search or filters"
                 : "TV shows will appear here when they're added to your collection."}
             </p>
           </div>
