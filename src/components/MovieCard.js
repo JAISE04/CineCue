@@ -11,8 +11,9 @@ const MovieCard = ({
   genre,
   language,
   duration,
+  onClick,
 }) => (
-  <div className="movie-card">
+  <div className="movie-card" onClick={onClick}>
     <img src={poster} alt={title} className="movie-poster" />
 
     {rating && (

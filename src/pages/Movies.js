@@ -4,6 +4,7 @@ import ControlsSection from "../components/ControlSection";
 import MoviesContainer from "../components/MoviesContainer";
 import NoResults from "../components/NoResults";
 import PageHeader from "../components/PageHeader";
+import MovieModal from "../components/MovieModal";
 
 const SHEET_CSV_URL = process.env.REACT_APP_SHEET_CSV_URL;
 
@@ -15,6 +16,8 @@ const Movies = ({ globalSearchQuery = "" }) => {
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [sortBy, setSortBy] = useState("Year (Newest)");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -125,6 +128,10 @@ const Movies = ({ globalSearchQuery = "" }) => {
     if (globalSearchQuery) return `Results for "${globalSearchQuery}"`;
     return "Discover amazing movies from every genre";
   };
+  const handleOpenModal = (movie) => {
+  setSelectedMovie(movie);
+  setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -156,10 +163,19 @@ const Movies = ({ globalSearchQuery = "" }) => {
       />
 
       <MoviesContainer
-        movies={filteredMovies}
-        viewMode={viewMode}
-        isLoading={isLoading}
+      movies={filteredMovies}
+      viewMode={viewMode}
+      isLoading={isLoading}
+      onMovieClick={handleOpenModal}
       />
+
+      {selectedMovie && (
+        <MovieModal
+        movie={selectedMovie}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      )}
 
       {filteredMovies.length === 0 && globalSearchQuery && (
         <NoResults query={globalSearchQuery} />

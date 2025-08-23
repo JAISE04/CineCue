@@ -36,8 +36,7 @@ function App() {
           />
           <Route
             path="/movies"
-            element={<Movies globalSearchQuery={globalSearchQuery} />}
-            element={<TVShows globalSearchQuery={globalSearchQuery} />}
+            element={<Movies globalSearchQuery={globalSearchQuery} />}/>
           <Route path="/tv-shows" element={<TVShows />} />
           <Route path="/my-list" element={<MyList />} />
           <Route

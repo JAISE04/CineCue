@@ -4,6 +4,7 @@ import HeroSection from "../components/HeroSection";
 import ControlsSection from "../components/ControlSection";
 import MoviesContainer from "../components/MoviesContainer";
 import NoResults from "../components/NoResults";
+import MovieModal from "../components/MovieModal";
 
 const SHEET_CSV_URL = process.env.REACT_APP_SHEET_CSV_URL;
 
@@ -15,6 +16,8 @@ const Home = ({ globalSearchQuery = "" }) => {
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [sortBy, setSortBy] = useState("Year (Newest)");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -112,6 +115,10 @@ const Home = ({ globalSearchQuery = "" }) => {
   } else if (sortBy === "Recently Uploaded") {
     filteredMovies = [...filteredMovies];
   }
+  const handleOpenModal = (movie) => {
+  setSelectedMovie(movie);
+  setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -140,10 +147,19 @@ const Home = ({ globalSearchQuery = "" }) => {
       />
 
       <MoviesContainer
-        movies={filteredMovies}
-        viewMode={viewMode}
-        isLoading={isLoading}
+      movies={filteredMovies}
+      viewMode={viewMode}
+      isLoading={isLoading}
+      onMovieClick={handleOpenModal}
       />
+
+      {selectedMovie && (
+        <MovieModal
+        movie={selectedMovie}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      )}
 
       {filteredMovies.length === 0 && globalSearchQuery && (
         <NoResults query={globalSearchQuery} />
