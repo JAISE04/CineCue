@@ -3,15 +3,39 @@ import React from "react";
 import { X, Play, Download, Star, Clock } from "lucide-react";
 import "./MovieModal.css";
 
+
+// Helper to extract YouTube video ID from a URL or return the ID if already provided
+const getYouTubeId = (urlOrId) => {
+  if (!urlOrId) return null;
+  // If it's already an ID (11 chars, no special chars), return as is
+  if (/^[a-zA-Z0-9_-]{11}$/.test(urlOrId)) return urlOrId;
+  // Try to extract ID from URL
+  const match = urlOrId.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+};
+
 const MovieModal = ({ movie, isOpen, onClose }) => {
   if (!isOpen || !movie) return null;
+
+  const trailerId = getYouTubeId(movie.trailer);
 
   return (
     <div className="movie-modal-backdrop" onClick={onClose}>
       <div className="movie-modal" onClick={(e) => e.stopPropagation()}>
-        {/* Header with poster */}
+        {/* Header with trailer (YouTube embed) */}
         <div className="movie-modal-header">
-          <img src={movie.poster} alt={movie.title} className="modal-poster" />
+          {trailerId ? (
+            <iframe
+              className="modal-trailer"
+              src={`https://www.youtube.com/embed/${trailerId}?autoplay=1`}
+              title="YouTube trailer"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          ) : (
+            <img src={movie.poster} alt={movie.title} className="modal-poster" />
+          )}
           <button className="modal-close" onClick={onClose}>
             <X size={24} />
           </button>
