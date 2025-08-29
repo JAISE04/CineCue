@@ -43,6 +43,7 @@ const Home = ({ globalSearchQuery = "" }) => {
           genre: row["Genre"] || row["Genres"],
           language: row["Language"] || row["Languages"],
           duration: row["Duration"] || row["Runtime"],
+          trailer: row["Trailer"],
         }));
         setMovies(movieList);
         setIsLoading(false);
