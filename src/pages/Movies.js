@@ -5,6 +5,7 @@ import MoviesContainer from "../components/MoviesContainer";
 import NoResults from "../components/NoResults";
 import PageHeader from "../components/PageHeader";
 import MovieModal from "../components/MovieModal";
+import { supabase } from "../supabaseClient";
 
 const SHEET_CSV_URL = process.env.REACT_APP_SHEET_CSV_URL;
 
@@ -15,15 +16,34 @@ const Movies = ({ globalSearchQuery = "" }) => {
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [sortBy, setSortBy] = useState("Year (Newest)");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Get initial user
+    supabase.auth.getUser().then(({ data: { user: currentUser } }) => {
+      setUser(currentUser);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
-    
+
     if (!SHEET_CSV_URL || SHEET_CSV_URL === "your_csv_url_here") {
-      console.warn("CSV URL not configured. Please set REACT_APP_SHEET_CSV_URL in your .env file");
+      console.warn(
+        "CSV URL not configured. Please set REACT_APP_SHEET_CSV_URL in your .env file"
+      );
       setMovies([]);
       setIsLoading(false);
       return;
@@ -130,8 +150,8 @@ const Movies = ({ globalSearchQuery = "" }) => {
     return "Discover amazing movies from every genre";
   };
   const handleOpenModal = (movie) => {
-  setSelectedMovie(movie);
-  setIsModalOpen(true);
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
   };
 
   return (
@@ -164,18 +184,19 @@ const Movies = ({ globalSearchQuery = "" }) => {
       />
 
       <MoviesContainer
-      movies={filteredMovies}
-      viewMode={viewMode}
-      isLoading={isLoading}
-      onMovieClick={handleOpenModal}
+        movies={filteredMovies}
+        viewMode={viewMode}
+        isLoading={isLoading}
+        onMovieClick={handleOpenModal}
       />
 
       {selectedMovie && (
         <MovieModal
-        movie={selectedMovie}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+          movie={selectedMovie}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          user={user}
+        />
       )}
 
       {filteredMovies.length === 0 && globalSearchQuery && (

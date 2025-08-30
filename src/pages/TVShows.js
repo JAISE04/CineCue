@@ -7,7 +7,7 @@ import PageHeader from "../components/PageHeader";
 
 const SHEET_CSV_URL = process.env.REACT_APP_SHEET_CSV_URL;
 
-const TVShows = ({ globalSearchQuery = "" }) => {
+const TVShows = ({ globalSearchQuery = "", user }) => {
   const [tvShows, setTvShows] = useState([]);
   const [viewMode, setViewMode] = useState("grid");
   const [selectedGenre, setSelectedGenre] = useState("");
@@ -124,6 +124,7 @@ const TVShows = ({ globalSearchQuery = "" }) => {
         movies={filteredTvShows}
         viewMode={viewMode}
         isLoading={isLoading}
+        user={user}
       />
 
       {filteredTvShows.length === 0 && !isLoading && (

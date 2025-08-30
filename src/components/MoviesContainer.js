@@ -2,7 +2,13 @@ import React from "react";
 import MovieCard from "./MovieCard";
 import LoadingCard from "./LoadingCard";
 
-const MoviesContainer = ({ movies, viewMode, isLoading, onMovieClick }) => {
+const MoviesContainer = ({
+  movies,
+  viewMode,
+  isLoading,
+  onMovieClick,
+  user,
+}) => {
   return (
     <div className={`movies-container ${viewMode}`}>
       {isLoading
@@ -14,7 +20,8 @@ const MoviesContainer = ({ movies, viewMode, isLoading, onMovieClick }) => {
               key={index}
               {...movie}
               viewMode={viewMode}
-              onClick={() => onMovieClick(movie)} 
+              onClick={() => onMovieClick(movie)}
+              user={user}
             />
           ))}
     </div>

@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, Bell, User, Settings, X } from "lucide-react";
+import { Search, User, X, LogOut, Settings } from "lucide-react";
 import logo from "../assets/cinecue-logo-transparent.png";
+import { supabase } from "../supabaseClient";
 
-const Navbar = ({ onSearch, searchQuery, onClearSearch }) => {
+const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [localQuery, setLocalQuery] = useState(searchQuery || "");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -64,6 +67,37 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch }) => {
     } else if (e.key === "Escape") {
       setIsFocused(false);
     }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
+  };
+
+  const getInitials = (user) => {
+    if (!user?.email) return "U";
+    return user.email
+      .split("@")[0]
+      .split(/[._-]/)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   return (
@@ -131,10 +165,128 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch }) => {
           </div>
         </form>
 
-        <div className="navbar-icons">
-          <Bell size={20} className="nav-icon" />
-          <User size={20} className="nav-icon" />
-          <Settings size={20} className="nav-icon" />
+        <div className="navbar-auth">
+          {user ? (
+            <div
+              className="user-profile"
+              ref={dropdownRef}
+              style={{ position: "relative" }}
+            >
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                style={{
+                  background: "#e50914",
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "4px",
+                  border: "none",
+                  color: "white",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginLeft: "16px",
+                }}
+              >
+                {getInitials(user)}
+              </button>
+
+              {showDropdown && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    right: "0",
+                    background: "#141414",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "4px",
+                    padding: "8px",
+                    marginTop: "8px",
+                    minWidth: "200px",
+                    zIndex: 1000,
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: "8px 16px",
+                      borderBottom: "1px solid rgba(255,255,255,0.1)",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <div style={{ color: "#fff", fontSize: "14px" }}>
+                      {user.email}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => navigate("/my-list")}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      width: "100%",
+                      padding: "8px 16px",
+                      background: "none",
+                      border: "none",
+                      color: "white",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      textAlign: "left",
+                    }}
+                  >
+                    <Settings size={16} />
+                    My List
+                  </button>
+
+                  <button
+                    onClick={handleSignOut}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      width: "100%",
+                      padding: "8px 16px",
+                      background: "none",
+                      border: "none",
+                      color: "white",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      textAlign: "left",
+                    }}
+                  >
+                    <LogOut size={16} />
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link
+              to="/auth"
+              className="auth-button"
+              style={{
+                background: "#e50914",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                padding: "8px 16px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                fontSize: "14px",
+                fontWeight: "600",
+                transition: "background 0.2s",
+                marginLeft: "16px",
+                textDecoration: "none",
+              }}
+            >
+              <User size={18} />
+              Sign In
+            </Link>
+          )}
         </div>
       </div>
     </nav>

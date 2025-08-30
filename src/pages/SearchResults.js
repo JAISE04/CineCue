@@ -7,7 +7,7 @@ import NoResults from "../components/NoResults";
 
 const SHEET_CSV_URL = process.env.REACT_APP_SHEET_CSV_URL;
 
-const SearchResults = ({ searchQuery, onClearSearch }) => {
+const SearchResults = ({ searchQuery, onClearSearch, user }) => {
   const [allContent, setAllContent] = useState([]);
   const [viewMode, setViewMode] = useState("grid");
   const [selectedGenre, setSelectedGenre] = useState("");
@@ -18,9 +18,11 @@ const SearchResults = ({ searchQuery, onClearSearch }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    
+
     if (!SHEET_CSV_URL || SHEET_CSV_URL === "your_csv_url_here") {
-      console.warn("CSV URL not configured. Please set REACT_APP_SHEET_CSV_URL in your .env file");
+      console.warn(
+        "CSV URL not configured. Please set REACT_APP_SHEET_CSV_URL in your .env file"
+      );
       setAllContent([]);
       setIsLoading(false);
       return;
@@ -141,6 +143,7 @@ const SearchResults = ({ searchQuery, onClearSearch }) => {
         movies={filteredContent}
         viewMode={viewMode}
         isLoading={isLoading}
+        user={user}
       />
 
       {filteredContent.length === 0 && searchQuery && (

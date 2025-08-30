@@ -1,25 +1,53 @@
 import React, { useState, useEffect } from "react";
 import PageHeader from "../components/PageHeader";
 import MoviesContainer from "../components/MoviesContainer";
+import MovieModal from "../components/MovieModal";
+import { useMovieList } from "../context/MovieListContext";
+import { supabase } from "../supabaseClient";
 
 const MyList = () => {
-  const [myListMovies, setMyListMovies] = useState([]);
+  const { myList, loading } = useMovieList();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // In a real app, this would fetch from localStorage or a backend
-    const savedList = JSON.parse(localStorage.getItem("myMovieList") || "[]");
-    setMyListMovies(savedList);
+    // Get initial user
+    supabase.auth.getUser().then(({ data: { user: currentUser } }) => {
+      setUser(currentUser);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
+
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = (movie) => {
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
+  };
 
   return (
     <>
       <PageHeader
         title="My List"
         subtitle="Your personally curated collection"
-        itemCount={myListMovies.length}
+        itemCount={myList.length}
       />
 
-      {myListMovies.length === 0 ? (
+      {loading ? (
+        <div
+          style={{ padding: "2rem 4%", textAlign: "center", minHeight: "50vh" }}
+        >
+          <p>Loading your list...</p>
+        </div>
+      ) : myList.length === 0 ? (
         <div
           style={{ padding: "2rem 4%", textAlign: "center", minHeight: "50vh" }}
         >
@@ -63,9 +91,22 @@ const MyList = () => {
         </div>
       ) : (
         <MoviesContainer
-          movies={myListMovies}
+          movies={myList.map((item) => ({
+            ...item.movie_data,
+            id: item.id,
+          }))}
           viewMode="grid"
           isLoading={false}
+          onMovieClick={handleOpenModal}
+        />
+      )}
+
+      {selectedMovie && (
+        <MovieModal
+          movie={selectedMovie}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          user={user}
         />
       )}
     </>
