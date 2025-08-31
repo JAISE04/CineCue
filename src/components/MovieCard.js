@@ -1,5 +1,5 @@
 import React from "react";
-import { Play, Download, Star, Clock } from "lucide-react";
+import { Star, Clock } from "lucide-react";
 
 const MovieCard = ({
   title,
