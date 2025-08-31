@@ -8,9 +8,7 @@ import { useMovieList } from "../context/MovieListContext";
 // Helper to extract YouTube video ID from a URL or return the ID if already provided
 const getYouTubeId = (urlOrId) => {
   if (!urlOrId) return null;
-  // If it's already an ID (11 chars, no special chars), return as is
-  if (/^[a-zA-Z0-9_-]{11}$/.test(urlOrId)) return urlOrId;
-  // Try to extract ID from URL
+  if (urlOrId.length === 11) return urlOrId;
   const match = urlOrId.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
   return match ? match[1] : null;
 };
@@ -24,7 +22,6 @@ const MovieModal = ({ movie, isOpen, onClose, user }) => {
   if (!isOpen || !movie) return null;
 
   const trailerId = getYouTubeId(movie.trailer);
-
   return (
     <div className="movie-modal-backdrop" onClick={onClose}>
       <div className="movie-modal" onClick={(e) => e.stopPropagation()}>
@@ -121,26 +118,24 @@ const MovieModal = ({ movie, isOpen, onClose, user }) => {
               } ${isInList ? "in-list" : ""}`}
               onClick={async () => {
                 if (!user) {
-                  toast.error("Please sign in to add to your list");
+                  toast.error("Please sign in to add to your list", {
+                    id: `auth-${movie.title}`,
+                  });
                   return;
                 }
                 setIsAddingToList(true);
                 try {
                   if (isInList) {
-                    // Show toast immediately
                     toast.success("Removed from My List", {
                       id: `remove-${movie.title}`,
                       duration: 2000,
                     });
-                    // Optimistically update UI and handle backend sync
                     await optimisticRemoveFromList(user.id, movie.title);
                   } else {
-                    // Show toast immediately
                     toast.success("Added to My List", {
                       id: `add-${movie.title}`,
                       duration: 2000,
                     });
-                    // Optimistically update UI and handle backend sync
                     await optimisticAddToList(user.id, movie);
                   }
                 } catch (error) {

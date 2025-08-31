@@ -18,6 +18,7 @@ import Auth from "./pages/Auth";
 import SignUp from "./pages/SignUp";
 import { supabase } from "./supabaseClient";
 import { MovieListProvider } from "./context/MovieListContext";
+import { AuthProvider } from "./context/AuthContext";
 
 // Wrapper component to use location
 function AppContent() {
@@ -112,28 +113,30 @@ function AppContent() {
 // Main App component with Router
 function App() {
   return (
-    <Router>
+    <AuthProvider>
       <MovieListProvider>
-        <AppContent />
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            duration: 2000,
-            style: {
-              background: "#363636",
-              color: "#fff",
-            },
-            success: {
+        <Router>
+          <AppContent />
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
               duration: 2000,
-              iconTheme: {
-                primary: "#e50914",
-                secondary: "#fff",
+              style: {
+                background: "#363636",
+                color: "#fff",
               },
-            },
-          }}
-        />
+              success: {
+                duration: 2000,
+                iconTheme: {
+                  primary: "#e50914",
+                  secondary: "#fff",
+                },
+              },
+            }}
+          />
+        </Router>
       </MovieListProvider>
-    </Router>
+    </AuthProvider>
   );
 }
 

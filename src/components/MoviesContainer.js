@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import MovieCard from "./MovieCard";
 import LoadingCard from "./LoadingCard";
+import MovieModal from "./MovieModal";
+import { useAuth } from "../context/AuthContext";
 
 const MoviesContainer = ({
   movies,
@@ -9,6 +11,10 @@ const MoviesContainer = ({
   onMovieClick,
   user,
 }) => {
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const { user: authUser } = useAuth();
+  const currentUser = user || authUser;
+
   return (
     <div className={`movies-container ${viewMode}`}>
       {isLoading
@@ -20,10 +26,20 @@ const MoviesContainer = ({
               key={index}
               {...movie}
               viewMode={viewMode}
-              onClick={() => onMovieClick(movie)}
-              user={user}
+              onClick={() =>
+                onMovieClick ? onMovieClick(movie) : setSelectedMovie(movie)
+              }
+              user={currentUser}
             />
           ))}
+      {selectedMovie && (
+        <MovieModal
+          movie={selectedMovie}
+          isOpen={true}
+          onClose={() => setSelectedMovie(null)}
+          user={currentUser}
+        />
+      )}
     </div>
   );
 };

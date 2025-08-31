@@ -184,6 +184,32 @@
 .modal-btn.secondary:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+.list-toggle-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.list-icon {
+  transition: all 0.2s ease;
+}
+
+.list-icon.plus {
+  transform: scale(1.2);
+}
+
+.list-icon.check {
+  color: #22c55e;
+  transform: scale(1.1);
+}
+
 @media (max-width: 480px) {
   .movie-modal-header {
     height: 200px;

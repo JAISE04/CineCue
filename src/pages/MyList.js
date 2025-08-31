@@ -8,6 +8,8 @@ import { supabase } from "../supabaseClient";
 const MyList = () => {
   const { myList, loading } = useMovieList();
   const [user, setUser] = useState(null);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Get initial user
@@ -24,9 +26,6 @@ const MyList = () => {
 
     return () => subscription.unsubscribe();
   }, []);
-
-  const [selectedMovie, setSelectedMovie] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = (movie) => {
     setSelectedMovie(movie);

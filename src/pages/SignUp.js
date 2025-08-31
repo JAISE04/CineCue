@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "../supabaseClient";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import cinecueLogo from "../assets/cinecue-logo-transparent.png";
 import "../styles/Auth.css";
 
@@ -9,7 +9,6 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
