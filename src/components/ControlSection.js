@@ -21,17 +21,29 @@ const ControlsSection = ({
   setViewMode,
   pageType = "home",
 }) => {
-  const sortOptions = [
-    "Title (A-Z)",
-    "Rating (High → Low)",
-    "Year (Newest)",
-    "Recently Uploaded",
-  ];
+  const getSortOptions = () => {
+    if (pageType === "tv-shows") {
+      return ["Title (A-Z)", "Title (Z-A)", "Most Episodes", "Most Seasons"];
+    }
+    return [
+      "Title (A-Z)",
+      "Rating (High → Low)",
+      "Year (Newest)",
+      "Recently Uploaded",
+    ];
+  };
 
   const getSectionTitle = () => {
     if (query) return `Search Results for "${query}"`;
     if (pageType === "movies") return "All Movies";
+    if (pageType === "tv-shows") return "All TV Shows";
     return "Latest Movies";
+  };
+
+  const getItemLabel = () => {
+    if (pageType === "tv-shows") return "series";
+    if (pageType === "movies") return "movies";
+    return "items";
   };
 
   return (
@@ -40,7 +52,7 @@ const ControlsSection = ({
         <h2 className="section-title">
           {getSectionTitle()}
           <span className="results-count">
-            ({filteredMoviesCount} {pageType === "movies" ? "movies" : "items"})
+            ({filteredMoviesCount} {getItemLabel()})
           </span>
         </h2>
       </div>
@@ -73,7 +85,7 @@ const ControlsSection = ({
 
           <FilterDropdown
             label="Sort By"
-            options={sortOptions}
+            options={getSortOptions()}
             value={sortBy}
             onChange={setSortBy}
             icon={Filter}

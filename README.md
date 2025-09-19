@@ -1,173 +1,304 @@
 # 🎬 CineCue
 
-> A modern, responsive movie streaming platform built with React that dynamically loads content from CSV data sources.
-
-
+> A Netflix-inspired streaming platform built with React that dynamically loads movies and TV series from Google Sheets or CSV data sources.
 
 ## ✨ Features
 
 ### 🎯 Core Functionality
-- **Dynamic Content Loading** - Seamlessly loads movie data from CSV files
-- **Advanced Search** - Real-time search functionality with instant results
-- **Smart Filtering** - Filter by genre, year, and rating
-- **Multiple Sort Options** - Sort by title, year, or rating
+
+- **Dynamic Content Loading** - Seamlessly loads movie and TV series data from Google Sheets CSV exports
+- **Netflix-Style Series Browsing** - Organize episodes by seasons with intuitive navigation
+- **Advanced Search & Filtering** - Real-time search with smart filtering by genre, year, rating, and more
+- **Multiple View Modes** - Switch between grid and list views for optimal browsing
+- **User Authentication** - Powered by Supabase for secure user accounts and personal lists
+- **Personal Lists** - Add movies and series to "My List" for easy access
 - **Responsive Design** - Optimized for desktop, tablet, and mobile devices
 
 ### 🎨 User Experience
-- **Netflix-inspired UI** - Modern, sleek interface design
-- **Smooth Animations** - Fluid hover effects and transitions
-- **Grid/List View Toggle** - Switch between viewing modes
-- **Loading States** - Elegant loading animations
-- **Interactive Movie Cards** - Hover effects with movie details
+
+- **Netflix-Inspired UI** - Modern, sleek interface with hover effects and smooth transitions
+- **Series Episode Management** - Season-based navigation with episode details, file sizes, and dates
+- **Interactive Media Cards** - Rich hover states with play buttons and quick actions
+- **TMDB Integration** - Automatic poster fetching for professional-quality artwork
+- **Google Drive Integration** - Direct streaming from Google Drive with preview support
+- **Loading States** - Elegant loading animations and skeleton screens
 
 ### 📱 Interface Elements
-- **Sticky Navigation** - Scroll-aware navigation bar
-- **Expandable Search** - Click-to-expand search functionality
-- **Hero Section** - Dynamic stats display
-- **Movie Ratings** - Star ratings with visual indicators
-- **Quick Actions** - Direct watch and download links
+
+- **Sticky Navigation** - Context-aware navigation with active page indicators
+- **Expandable Search** - Global search across movies and TV shows
+- **Hero Section** - Dynamic stats display with item counts
+- **Season/Episode Navigation** - Tabbed interface for easy series browsing
+- **Play Functionality** - Direct streaming with Google Drive preview links
+- **File Metadata** - Display file sizes, upload dates, and quality information
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v14.0 or higher)
-- npm or yarn package manager
-- A CSV data source with movie information
+
+- **Node.js** (v14.0 or higher)
+- **npm** or **yarn** package manager
+- **Google Sheets** with movie/series data
+- **Supabase Account** (optional, for user authentication)
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
-   git clone https://github.com/yourusername/cinecue.git
-   cd cinecue
+   git clone https://github.com/JAISE04/CineCue.git
+   cd CineCue
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
 3. **Configure environment variables**
+
+   Create a `.env` file in the root directory:
+
    ```bash
-   # Create .env file in root directory
-   echo "REACT_APP_SHEET_CSV_URL=your_csv_url_here" > .env
+   # Google Sheets CSV URLs
+   REACT_APP_SHEET_CSV_URL=your_movies_google_sheets_csv_url
+   REACT_APP_SERIES_CSV_URL=your_series_google_sheets_csv_url
+
+   # Supabase Configuration (optional)
+   REACT_APP_SUPABASE_URL=your_supabase_project_url
+   REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
 4. **Start the development server**
+
    ```bash
    npm start
-   # or
-   yarn start
    ```
 
 5. **Open your browser**
    Navigate to `http://localhost:3000`
 
-## 📊 CSV Data Format
+## 📊 Data Sources & Setup
 
-Your CSV file should include the following columns:
+### Google Sheets Setup
 
-| Column Name | Description | Required |
-|-------------|-------------|----------|
-| `Clean Title` | Movie title | ✅ |
-| `Poster` | Poster image URL | ✅ |
-| `Preview Link` | Streaming/preview URL | ✅ |
-| `Download Link` | Download URL | ✅ |
-| `Year` or `Release Year` | Release year | ❌ |
-| `Rating` or `IMDb Rating` | Movie rating | ❌ |
-| `Genre` or `Genres` | Movie genre(s) | ❌ |
-| `Duration` or `Runtime` | Movie duration | ❌ |
+#### Movies Sheet Structure
 
-### Example CSV Structure
-```csv
-Clean Title,Poster,Preview Link,Download Link,Year,Rating,Genre,Duration
-Guardians of the Galaxy Vol 3,https://example.com/poster.jpg,https://example.com/watch,https://example.com/download,2023,8.2,Action/Adventure,150 min
+| Column Name     | Description           | Required | Example                         |
+| --------------- | --------------------- | -------- | ------------------------------- |
+| `Clean Title`   | Movie title           | ✅       | "Guardians of the Galaxy Vol 3" |
+| `Poster`        | Poster image URL      | ✅       | "https://image.tmdb.org/..."    |
+| `Preview Link`  | Streaming/preview URL | ✅       | "https://drive.google.com/..."  |
+| `Download Link` | Download URL          | ✅       | "https://drive.google.com/..."  |
+| `Year`          | Release year          | ❌       | "2023"                          |
+| `Rating`        | IMDb/Movie rating     | ❌       | "8.2"                           |
+| `Genre`         | Movie genre(s)        | ❌       | "Action, Adventure"             |
+| `Duration`      | Runtime               | ❌       | "150 min"                       |
+
+#### TV Series Sheet Structure
+
+| Column Name      | Description          | Required | Example                           |
+| ---------------- | -------------------- | -------- | --------------------------------- |
+| `Series`         | Series title         | ✅       | "BoJack Horseman"                 |
+| `Season`         | Season name          | ✅       | "Season 1"                        |
+| `Episode`        | Episode title/number | ✅       | "E01 - Pilot"                     |
+| `File Name`      | Episode file name    | ✅       | "BoJack.Horseman.S01E01.720p.mkv" |
+| `Preview URL`    | Streaming URL        | ✅       | "https://drive.google.com/..."    |
+| `File URL`       | Download URL         | ✅       | "https://drive.google.com/..."    |
+| `Poster URL`     | Series poster (TMDB) | ❌       | "https://image.tmdb.org/..."      |
+| `File Size`      | Episode file size    | ❌       | "2.5 GB"                          |
+| `Date Added`     | Upload date          | ❌       | "2023-11-23"                      |
+| `Season Number`  | Season number        | ❌       | "1"                               |
+| `Episode Number` | Episode number       | ❌       | "1"                               |
+
+### TMDB Integration Setup
+
+For automatic poster fetching, use this Google Apps Script:
+
+```javascript
+function generateSeriesData() {
+  const API_KEY = "your_tmdb_api_key";
+
+  // Your series data processing logic
+  const seriesName = "BoJack Horseman";
+  const searchUrl = `https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&query=${encodeURIComponent(
+    seriesName
+  )}`;
+
+  const response = UrlFetchApp.fetch(searchUrl);
+  const data = JSON.parse(response.getContentText());
+
+  if (data.results && data.results.length > 0) {
+    const posterPath = data.results[0].poster_path;
+    return `https://image.tmdb.org/t/p/w500${posterPath}`;
+  }
+
+  return null;
+}
 ```
+
+### Google Sheets CSV Export
+
+1. **Create your Google Sheet** with the required columns
+2. **Publish to web**: File → Share → Publish to web
+3. **Select CSV format** and get the public URL
+4. **Use in .env file** as `REACT_APP_SHEET_CSV_URL` and `REACT_APP_SERIES_CSV_URL`
 
 ## 🛠 Technology Stack
 
-### Frontend Framework
-- **React 18+** - Modern React with hooks and functional components
+### Frontend
+
+- **React 18+** - Modern React with hooks and context
+- **React Router** - Client-side routing
 - **Lucide React** - Beautiful, customizable icons
+- **React Hot Toast** - Elegant notification system
+
+### Data & Storage
+
 - **Papa Parse** - Powerful CSV parsing library
+- **Supabase** - Backend-as-a-Service for authentication and data
+- **Google Sheets** - Dynamic data source via CSV export
 
 ### Styling
+
 - **CSS3** - Custom CSS with modern features
 - **Flexbox & Grid** - Responsive layout systems
-- **CSS Animations** - Smooth transitions and hover effects
+- **CSS Animations** - Netflix-style transitions and hover effects
 
-### Data Management
-- **React Hooks** - useState, useEffect for state management
-- **CSV Integration** - Dynamic data loading from external sources
+## 🎨 Component Architecture
 
-## 🎨 Design Philosophy
+```
+src/
+├── components/
+│   ├── Navbar.js              # Navigation with search
+│   ├── MovieCard.js           # Individual movie cards
+│   ├── SeriesCard.js          # TV series cards with season info
+│   ├── SeriesModal.js         # Series detail modal with episodes
+│   ├── ControlSection.js      # Filters and view controls
+│   └── Footer.js              # App footer
+├── pages/
+│   ├── Home.js                # Landing page
+│   ├── Movies.js              # Movies catalog
+│   ├── TVShows.js             # TV series catalog
+│   ├── MyList.js              # User's personal list
+│   └── Auth.js                # Authentication
+├── context/
+│   ├── AuthContext.js         # User authentication state
+│   ├── MovieListContext.js    # Movie list management
+│   └── SeriesContext.js       # Series list management
+└── utils/
+    └── userList.js            # List utility functions
+```
 
-CineCue follows modern web design principles:
+## 🔧 Advanced Features
 
-- **Mobile-First Approach** - Responsive design starting from mobile
-- **Performance Focused** - Optimized loading and rendering
-- **User-Centric** - Intuitive navigation and search
-- **Accessibility** - Semantic HTML and keyboard navigation
-- **Visual Hierarchy** - Clear content organization
+### Series Management
 
-## 📱 Responsive Breakpoints
+- **Season-based Organization** - Automatic grouping by seasons
+- **Episode Metadata** - File sizes, upload dates, quality info
+- **Play Integration** - Direct Google Drive streaming
+- **Progress Tracking** - Latest season indicators
+
+### User Authentication
+
+- **Supabase Integration** - Secure user accounts
+- **Personal Lists** - Save favorite movies and series
+- **Optimistic Updates** - Instant UI feedback
+
+### Performance Optimizations
+
+- **Lazy Loading** - Components load as needed
+- **CSV Caching** - Efficient data parsing
+- **Responsive Images** - Optimized poster loading
+
+## 📱 Responsive Design
+
+### Breakpoints
 
 ```css
-/* Mobile devices */
-@media (max-width: 768px)
-
-/* Tablet devices */
-@media (min-width: 769px) and (max-width: 1024px)
-
-/* Desktop devices */
-@media (min-width: 1025px)
+/* Mobile First Approach */
+@media (max-width: 768px) /* Mobile */ @media (min-width: 769px) /* Tablet */ @media (min-width: 1024px) /* Desktop */ @media (min-width: 1440px); /* Large Desktop */
 ```
 
-## 🔧 Configuration
+### Mobile Features
 
-### Environment Variables
-```bash
-REACT_APP_SHEET_CSV_URL=your_csv_data_url
-```
-
-### Customization Options
-- Modify `./src/App.css` for styling changes
-- Update logo in `./src/assets/`
-- Customize movie card layout in `MovieCard` component
-- Adjust filtering logic in the main App component
+- **Touch-Optimized** - Large touch targets
+- **Swipe Navigation** - Gesture support
+- **Compressed Layouts** - Space-efficient design
+- **Fast Loading** - Optimized for mobile networks
 
 ## 🚀 Deployment
 
 ### Build for Production
+
 ```bash
 npm run build
-# or
-yarn build
 ```
 
-### Deploy to Popular Platforms
-- **Netlify**: Connect your repository for automatic deployments
-- **Vercel**: Zero-configuration deployment with preview URLs
-- **GitHub Pages**: Static hosting directly from your repository
-- **Firebase Hosting**: Google's fast and secure hosting
+### Deployment Platforms
+
+#### Netlify
+
+1. Connect your GitHub repository
+2. Set build command: `npm run build`
+3. Set publish directory: `build`
+4. Add environment variables in Netlify dashboard
+
+#### Vercel
+
+1. Import your GitHub repository
+2. Environment variables auto-detected from `.env`
+3. Zero-configuration deployment
+
+#### Firebase Hosting
+
+```bash
+npm install -g firebase-tools
+firebase login
+firebase init hosting
+firebase deploy
+```
+
+## 🔒 Security & Best Practices
+
+### Environment Variables
+
+- **Never commit .env files** - Add to .gitignore
+- **Use REACT*APP* prefix** - Only for client-safe variables
+- **Supabase RLS** - Row Level Security for data protection
+
+### Data Validation
+
+- **CSV Structure Validation** - Graceful error handling
+- **URL Sanitization** - Safe external link handling
+- **User Input Validation** - XSS prevention
 
 ## 🤝 Contributing
 
-We welcome contributions! Please follow these steps:
+### Development Setup
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-### Development Guidelines
-- Follow React best practices
-- Maintain consistent code formatting
-- Add comments for complex logic
-- Test responsive design across devices
+### Code Style
+
+- **ESLint** - Follow React best practices
+- **Prettier** - Consistent code formatting
+- **Component Structure** - Functional components with hooks
+- **CSS Organization** - Modular, reusable styles
+
+## 📈 Future Roadmap
+
+- [ ] **Video Streaming** - In-app video player
+- [ ] **Offline Support** - Progressive Web App features
+- [ ] **Recommendations** - AI-powered content suggestions
+- [ ] **Social Features** - User reviews and ratings
+- [ ] **Download Management** - Progress tracking
+- [ ] **Multi-language Support** - Internationalization
 
 ## 📄 License
 
@@ -175,15 +306,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- React team for the amazing framework
-- Lucide team for the beautiful icons
-- Papa Parse for CSV parsing capabilities
-- The open-source community for inspiration
+- **Netflix** - UI/UX inspiration
+- **TMDB** - Movie and TV show metadata
+- **React Team** - Amazing framework
+- **Supabase** - Backend infrastructure
+- **Open Source Community** - Tools and inspiration
 
 ---
 
 <div align="center">
-  <strong>Built with ❤️ for movie enthusiasts</strong>
+  <strong>🎬 Built with ❤️ for streaming enthusiasts</strong>
   <br>
-  <sub>CineCue - Where every movie finds its audience</sub>
+  <sub>CineCue - Your personal Netflix, powered by Google Sheets</sub>
 </div>
