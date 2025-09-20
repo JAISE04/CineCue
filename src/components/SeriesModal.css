@@ -255,7 +255,8 @@
 }
 
 .series-modal-seasons,
-.series-modal-latest {
+.series-modal-latest,
+.series-modal-episodes-count {
   background: rgba(255, 255, 255, 0.1);
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -547,61 +548,100 @@
   overflow: hidden;
 }
 
+.series-modal-episodes-info {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 1.5rem;
+  border-radius: 24px;
+  font-size: 1.1rem;
+  color: #fff;
+  display: inline-block;
+  margin: 0 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .series-modal-overlay {
-    padding: 1rem;
+    padding: 0;
+  }
+
+  .series-modal-content {
+    max-width: 90%;
+    max-height: 85vh;
+    border-radius: 8px;
   }
 
   .series-modal-header {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 1rem;
   }
 
   .series-modal-poster img {
-    width: 150px;
-    height: 225px;
+    width: 100px;
+    height: 150px;
   }
 
   .series-modal-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .series-modal-meta {
     justify-content: center;
+    gap: 0.8rem;
+    font-size: 0.9rem;
   }
 
   .series-modal-actions {
-    flex-direction: column;
-  }
-
-  .seasons-pills {
-    justify-content: center;
-  }
-
-  .episodes-header {
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
     gap: 1rem;
   }
 
-  .season-dropdown {
-    align-self: flex-end;
+  .series-modal-play-btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
   }
 
-  .episode-card {
+  .series-modal-list-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .series-modal-body {
+    padding: 0 1rem 1rem;
+  }
+
+  .series-modal-episodes-header {
     flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
   }
 
-  .episode-thumbnail {
+  .series-modal-season-selector {
+    align-self: stretch;
+  }
+
+  .series-modal-season-dropdown {
     width: 100%;
-    height: 200px;
   }
 
-  .episode-header {
+  .series-modal-episode {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .series-modal-episode-thumbnail {
+    width: 100%;
+    height: 150px;
+  }
+
+  .series-modal-episode-info {
+    padding: 0.8rem;
+  }
+
+  .series-modal-episode-number {
+    display: none;
   }
 }

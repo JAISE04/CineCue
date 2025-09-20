@@ -22,6 +22,8 @@ const SeriesModal = ({ series, isOpen, onClose, user }) => {
 
   if (!isOpen || !series) return null;
 
+  console.log("Series data:", series);
+
   const inMyList = isInMySeriesList(series.title);
   const currentSeason = series.seasonsData[currentSeasonIndex];
 
@@ -432,9 +434,6 @@ const SeriesModal = ({ series, isOpen, onClose, user }) => {
           <div className="series-modal-episodes">
             {currentSeason?.episodes?.map((episode, index) => (
               <div key={index} className="series-modal-episode">
-                <div className="series-modal-episode-number">
-                  {episode.episodeNumber || index + 1}
-                </div>
                 <div className="series-modal-episode-thumbnail">
                   <img
                     src={getEpisodeThumbnail(episode)}

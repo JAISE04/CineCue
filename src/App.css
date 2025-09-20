@@ -376,7 +376,12 @@ body {
 
 /* ─── Series Container ─── */
 .series-container {
-  padding: 0 4% 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .series-container.grid {
@@ -399,6 +404,19 @@ body {
   border-radius: 12px;
   overflow: hidden;
   padding: 16px;
+}
+
+.series-card {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  aspect-ratio: 2/3;
+  width: 100%;
+  max-width: 180px;
+  margin: 0 auto;
 }
 
 .series-container.list .series-poster-container {
@@ -424,35 +442,26 @@ body {
 
 .series-container.list .series-meta {
   font-size: 1rem;
-}
-
-/* ─── Series Card (Netflix Style) ─── */
+}/* ─── Series Card ─── */
 .series-card {
   background-color: #1a1a1a;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   position: relative;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s ease;
   cursor: pointer;
   aspect-ratio: 2/3;
 }
 
 .series-card:hover {
-  transform: scale(1.08);
-  z-index: 20;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
-}
-
-.series-poster-container {
-  position: relative;
-  width: 100%;
-  height: 75%;
-  overflow: hidden;
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
 }
 
 .series-poster {
   width: 100%;
-  height: 100%;
+  height: 75%;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
@@ -461,222 +470,84 @@ body {
   transform: scale(1.1);
 }
 
-/* Netflix-style hover overlay */
-.series-hover-overlay {
+.series-rating {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.3) 50%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.series-card:hover .series-hover-overlay {
-  opacity: 1;
-}
-
-.series-play-button {
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(10px);
-}
-
-.series-play-button:hover {
-  background: white;
-  transform: scale(1.1);
-}
-
-/* Series badges */
-.series-season-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(229, 9, 20, 0.95);
-  color: white;
-  padding: 6px 10px;
-  border-radius: 16px;
-  font-size: 11px;
-  font-weight: 600;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 4px 8px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   gap: 4px;
-  backdrop-filter: blur(10px);
+  font-size: 12px;
+  font-weight: 600;
   z-index: 3;
 }
 
-.series-episode-count {
+.series-year {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 6px 10px;
-  border-radius: 16px;
-  font-size: 10px;
-  font-weight: 500;
-  backdrop-filter: blur(10px);
+  top: 8px;
+  right: 8px;
+  background: rgba(229, 9, 20, 0.9);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
   z-index: 3;
 }
 
-/* Series info section */
-.series-info {
-  padding: 12px 16px;
+.series-title {
+  padding: 8px 12px;
+  font-weight: 500;
+  font-size: 13px;
+  text-align: center;
   height: 25%;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
   background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.8));
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-}
-
-.series-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-  margin-bottom: 4px;
-  text-align: center;
-  line-height: 1.3;
+  color: #fff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-.series-meta {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.series-latest {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 2px 8px;
-  border-radius: 8px;
-  font-size: 10px;
-}
-
-/* Netflix-style expanded hover info */
-.series-hover-info {
+/* ─── Hover Overlay ─── */
+.series-hover {
   position: absolute;
-  top: 100%;
+  top: 0;
   left: 0;
-  right: 0;
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-  border-radius: 0 0 12px 12px;
-  padding: 16px;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  pointer-events: none;
-  z-index: 25;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-}
-
-.series-card:hover .series-hover-info {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: all;
-}
-
-.series-hover-content {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.9)
+  );
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: flex-end;
+  padding: 1rem;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 2;
 }
 
-.series-hover-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: white;
-  margin: 0;
+.series-card:hover .series-hover {
+  opacity: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.95)
+  );
 }
 
-.series-hover-meta {
-  display: flex;
-  gap: 12px;
-  font-size: 12px;
-  color: #ccc;
+.series-info {
+  text-align: center;
 }
-
-.series-hover-seasons,
-.series-hover-episodes {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px 8px;
-  border-radius: 12px;
-}
-
-.series-hover-description {
-  font-size: 12px;
-  color: #999;
-  line-height: 1.4;
-}
-
-.series-hover-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.series-play-btn {
-  background: #e50914;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: background-color 0.2s;
-}
-
-.series-play-btn:hover {
-  background: #f40612;
-}
-
-.series-add-btn {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
-}
-
-.series-add-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* ─── Series Mobile Responsive ─── */
 @media (max-width: 768px) {
   .series-container.grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -967,6 +838,62 @@ body {
   fill: none;
 }
 
+/* ─── Hover Overlay ─── */
+.series-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.9)
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.series-card:hover .series-hover {
+  opacity: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.95)
+  );
+}
+
+.series-hover-content {
+  text-align: center;
+}
+
+.series-hover-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.series-hover-meta {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+}
+
+.series-hover-seasons,
+.series-hover-episodes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+}
 /* ─── Loading States ─── */
 .movie-card.loading {
   background: #1a1a1a;
@@ -1351,7 +1278,6 @@ html {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin-top: 70px;
 }
 
 .page-header-content {
