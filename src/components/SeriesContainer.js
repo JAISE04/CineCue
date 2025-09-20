@@ -34,6 +34,7 @@ const SeriesContainer = ({
               user={currentUser}
             />
           ))}
+
       {selectedSeries && (
         <SeriesModal
           series={selectedSeries}

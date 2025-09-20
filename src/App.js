@@ -8,6 +8,7 @@ import {
 import { Toaster } from "react-hot-toast";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import MobileNavbar from "./components/MobileNavbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
@@ -54,12 +55,27 @@ function AppContent() {
 
   return (
     <>
-      <Navbar
-        onSearch={handleGlobalSearch}
-        searchQuery={globalSearchQuery}
-        onClearSearch={clearSearch}
-        user={user}
-      />
+      {/* Desktop Navbar - Hidden on mobile */}
+      <div className="hidden md:block">
+        <Navbar
+          onSearch={handleGlobalSearch}
+          searchQuery={globalSearchQuery}
+          onClearSearch={clearSearch}
+          user={user}
+        />
+      </div>
+
+      {/* Mobile Navbar - Hidden on desktop */}
+      <div className="block md:hidden">
+        <MobileNavbar
+          onSearch={handleGlobalSearch}
+          searchQuery={globalSearchQuery}
+          onClearSearch={clearSearch}
+          user={user}
+          onAuthClick={() => {}}
+        />
+      </div>
+
       <div className="app">
         <Routes>
           <Route

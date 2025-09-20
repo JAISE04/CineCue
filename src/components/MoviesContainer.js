@@ -24,14 +24,20 @@ const MoviesContainer = ({
         : movies.map((movie, index) => (
             <MovieCard
               key={index}
-              {...movie}
-              viewMode={viewMode}
+              title={movie.title}
+              poster={movie.poster}
+              year={movie.year}
+              rating={movie.rating}
+              genre={movie.genre}
+              duration={movie.duration}
+              preview={movie.preview}
+              download={movie.download}
               onClick={() =>
                 onMovieClick ? onMovieClick(movie) : setSelectedMovie(movie)
               }
-              user={currentUser}
             />
           ))}
+
       {selectedMovie && (
         <MovieModal
           movie={selectedMovie}

@@ -56,6 +56,14 @@ const TVShows = ({ globalSearchQuery = "", user }) => {
           const episodeNumber = row["Episode Number"];
           const previewURL = row["Preview URL"]; // For advanced version
 
+          // Additional CSV columns for episode data
+          const episodeThumbnail = row["Episode Thumbnail"];
+          const episodeDescription = row["Episode Description"];
+          const episodeName = row["Episode Name"];
+          const airDate = row["Air Date"];
+          const runtimeMin = row["Runtime (min)"];
+          const tmdbRating = row["TMDB Rating"];
+
           if (!seriesName || !season || !episode) {
             console.log(`Skipping row ${index}: missing required data`);
             return;
@@ -129,6 +137,13 @@ const TVShows = ({ globalSearchQuery = "", user }) => {
             preview: previewURL || fileURL, // Use preview URL if available, fallback to file URL
             fileSize: fileSize,
             dateAdded: dateAdded,
+            // Include all CSV column data
+            "Episode Thumbnail": episodeThumbnail,
+            "Episode Description": episodeDescription,
+            "Episode Name": episodeName,
+            "Air Date": airDate,
+            "Runtime (min)": runtimeMin,
+            "TMDB Rating": tmdbRating,
           };
 
           seriesData.seasonsData.get(seasonNum).episodes.push(episodeData);
