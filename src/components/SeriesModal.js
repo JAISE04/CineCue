@@ -399,8 +399,7 @@ const SeriesModal = ({ series, isOpen, onClose, user }) => {
                 className="series-modal-season-dropdown"
                 onClick={() => setShowSeasonDropdown(!showSeasonDropdown)}
               >
-                Season{" "}
-                {currentSeason?.episodes?.[0]?.season || currentSeasonIndex + 1}
+                Season {currentSeasonIndex + 1}
                 <ChevronDown
                   size={16}
                   className={showSeasonDropdown ? "rotated" : ""}
@@ -420,8 +419,8 @@ const SeriesModal = ({ series, isOpen, onClose, user }) => {
                         setShowSeasonDropdown(false);
                       }}
                     >
-                      Season {season.episodes?.[0]?.season || index + 1} (
-                      {season.episodes?.length || 0} Episodes)
+                      Season {index + 1} ({season.episodes?.length || 0}{" "}
+                      Episodes)
                     </div>
                   ))}
                 </div>
