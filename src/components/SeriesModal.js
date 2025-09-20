@@ -348,16 +348,20 @@ const SeriesModal = ({ series, isOpen, onClose, user }) => {
           <div className="series-modal-info">
             <h1 className="series-modal-title">{series.title}</h1>
             <div className="series-modal-meta">
-              <span className="series-modal-seasons">
-                {series.totalSeasons} Season
-                {series.totalSeasons !== 1 ? "s" : ""}
-              </span>
+              {series.totalSeasons && series.totalSeasons > 0 && (
+                <span className="series-modal-seasons">
+                  {series.totalSeasons} Season
+                  {series.totalSeasons !== 1 ? "s" : ""}
+                </span>
+              )}
               <span className="series-modal-episodes-count">
-                {series.totalEpisodes || "76"} Episodes
+                {series.totalEpisodes || "0"} Episodes
               </span>
-              <span className="series-modal-latest">
-                Latest: Season {series.totalSeasons}
-              </span>
+              {series.totalSeasons && series.totalSeasons > 0 && (
+                <span className="series-modal-latest">
+                  Latest: Season {series.totalSeasons}
+                </span>
+              )}
             </div>
 
             <div className="series-modal-actions">

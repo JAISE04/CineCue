@@ -74,7 +74,7 @@ const TVShows = ({ globalSearchQuery = "", user }) => {
               title: seriesName,
               poster: posterURL || null, // Use TMDB poster!
               seasonsData: new Map(),
-              seasons: 0,
+              totalSeasons: 0,
               totalEpisodes: 0,
               latestSeason: 0,
               episodes: [],
@@ -124,7 +124,7 @@ const TVShows = ({ globalSearchQuery = "", user }) => {
               season: seasonNum,
               episodes: [],
             });
-            seriesData.seasons++;
+            seriesData.totalSeasons++;
           }
 
           // Add episode to season with enhanced data
@@ -222,7 +222,7 @@ const TVShows = ({ globalSearchQuery = "", user }) => {
   } else if (sortBy === "Most Episodes") {
     filteredSeries.sort((a, b) => b.totalEpisodes - a.totalEpisodes);
   } else if (sortBy === "Most Seasons") {
-    filteredSeries.sort((a, b) => b.seasons - a.seasons);
+    filteredSeries.sort((a, b) => b.totalSeasons - a.totalSeasons);
   }
 
   const getPageTitle = () => {
