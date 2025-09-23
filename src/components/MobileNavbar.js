@@ -1,29 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Menu, X, User, Home, Film, Tv, List } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Search, Menu, X, User, Home, Film, Tv, List,LogOut, Settings } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/cinecue-logo-transparent.png";
+import { supabase } from "../supabaseClient";
 
 const MobileNavbar = ({
   onSearch,
   searchQuery,
   onClearSearch,
   user,
-  onAuthClick,
 }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
+    
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setShowDropdown(false);
+        }
+      };
+  
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
   useEffect(() => {
     // Close mobile menu when route changes
@@ -45,6 +59,24 @@ const MobileNavbar = ({
       onSearch(query);
       setIsSearchOpen(false);
     }
+  };
+  const handleSignOut = async () => {
+      try {
+        await supabase.auth.signOut();
+        navigate("/");
+      } catch (error) {
+        console.error("Error signing out:", error.message);
+      }
+    };
+    const getInitials = (user) => {
+    if (!user?.email) return "U";
+    return user.email
+      .split("@")[0]
+      .split(/[._-]/)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   return (
@@ -92,31 +124,126 @@ const MobileNavbar = ({
 
               {/* User Profile Button - Enhanced */}
               {user ? (
-                <Link to="/my-list">
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center space-x-2 p-1.5 sm:p-2 rounded-full bg-gradient-to-r from-netflix-red to-red-600 hover:from-red-600 hover:to-netflix-red transition-all duration-300 shadow-lg"
+            <div
+              className="user-profile"
+              ref={dropdownRef}
+              style={{ position: "relative" }}
+            >
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                style={{
+                  background: "#e50914",
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "4px",
+                  border: "none",
+                  color: "white",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginLeft: "16px",
+                }}
+              >
+                {getInitials(user)}
+              </button>
+
+              {showDropdown && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    right: "0",
+                    background: "#141414",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "4px",
+                    padding: "8px",
+                    marginTop: "8px",
+                    minWidth: "200px",
+                    zIndex: 1000,
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: "8px 16px",
+                      borderBottom: "1px solid rgba(255,255,255,0.1)",
+                      marginBottom: "8px",
+                    }}
                   >
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center backdrop-blur-sm">
-                      <User size={16} className="sm:w-4 sm:h-4 text-white" />
+                    <div style={{ color: "#fff", fontSize: "14px" }}>
+                      {user.email}
                     </div>
-                    <span className="hidden sm:block text-white text-sm font-medium truncate max-w-24 pr-1">
-                      {user.email?.split("@")[0] || "User"}
-                    </span>
-                  </motion.div>
-                </Link>
-              ) : (
-                <Link to="/auth">
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="p-2 sm:p-2.5 rounded-full text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-200"
+                  </div>
+
+                  <button
+                    onClick={() => navigate("/my-list")}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      width: "100%",
+                      padding: "8px 16px",
+                      background: "none",
+                      border: "none",
+                      color: "white",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      textAlign: "left",
+                    }}
                   >
-                    <User size={20} className="sm:w-5 sm:h-5" />
-                  </motion.button>
-                </Link>
+                    <Settings size={16} />
+                    My List
+                  </button>
+
+                  <button
+                    onClick={handleSignOut}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      width: "100%",
+                      padding: "8px 16px",
+                      background: "none",
+                      border: "none",
+                      color: "white",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      textAlign: "left",
+                    }}
+                  >
+                    <LogOut size={16} />
+                    Sign Out
+                  </button>
+                </div>
               )}
+            </div>
+          ) : (
+            <Link
+              to="/auth"
+              className="auth-button"
+              style={{
+                background: "#e50914",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                padding: "8px 16px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                fontSize: "14px",
+                fontWeight: "600",
+                transition: "background 0.2s",
+                marginLeft: "16px",
+                textDecoration: "none",
+              }}
+            >
+              <User size={18} />
+              Sign In
+            </Link>
+          )}
 
               {/* Mobile Menu Button */}
               <motion.button
@@ -278,27 +405,10 @@ const MobileNavbar = ({
                     transition={{ delay: 0.5 }}
                     className="space-y-4"
                   >
-                    <div className="flex items-center space-x-4 px-4 py-3 rounded-xl bg-gradient-to-r from-gray-800 to-gray-900">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-netflix-red to-red-600 flex items-center justify-center shadow-lg">
-                        <User size={24} className="text-white" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-white font-semibold text-base truncate">
-                          {user.email?.split("@")[0] || "User"}
-                        </p>
-                        <p className="text-gray-400 text-sm truncate">
-                          {user.email}
-                        </p>
-                      </div>
+                    <div className="text-gray-400 px-4">Signed in as</div>
+                    <div className="text-white font-semibold px-4">
+                      {user.email}
                     </div>
-                    <Link
-                      to="/my-list"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-xl transition-all duration-200"
-                    >
-                      <List size={20} />
-                      <span className="font-medium">My List</span>
-                    </Link>
                   </motion.div>
                 ) : (
                   <motion.div
