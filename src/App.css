@@ -1389,14 +1389,60 @@ html {
 
 .page-header {
   position: relative;
-  height: 40vh;
-  background: linear-gradient(135deg, #e50914 0%, #8b0000 50%, #141414 100%);
+  height: 60vh;
+  background: linear-gradient(90deg, #35040e 0%, #351c31 50%, #0e0619 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  isolation: isolate;
 }
-
+.page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #35040e 0%,
+    #351c31 25%,
+    #0e0619 50%,
+    #35040e 75%,
+    #351c31 100%
+  );
+  background-size: 300% 100%;
+  pointer-events: none;
+  z-index: 0;
+  animation: abstractFlow 10s ease-in-out infinite;
+}
+.page-header::after {
+    content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+        45deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.03) 50%,
+        transparent 65%
+      )
+      0/400% 400%,
+    radial-gradient(
+      circle at 70% 65%,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.25) 55%,
+      rgba(0, 0, 0, 0.6) 85%
+    ),
+    linear-gradient(
+      to top,
+      rgba(20, 20, 20, 0.9),
+      rgba(20, 20, 20, 0.1) 40%,
+      rgba(20, 20, 20, 0.8)
+    );
+  animation: shimmerFlow 35s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+  will-change: background-position;
+}
 .page-header-content {
   text-align: center;
   z-index: 2;
