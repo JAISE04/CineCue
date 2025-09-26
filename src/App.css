@@ -190,7 +190,7 @@ body {
 }
 
 /* Abstract flowing color transitions */
-.hero-section::before {
+.hero-section::before, .page-header::before{
   content: "";
   position: absolute;
   inset: 0;
@@ -341,7 +341,7 @@ body {
   letter-spacing: 1px;
 }
 
-.hero-gradient {
+.hero-gradient, .page-header-gradient {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -1397,23 +1397,6 @@ html {
   overflow: hidden;
   isolation: isolate;
 }
-.page-header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    #35040e 0%,
-    #351c31 25%,
-    #0e0619 50%,
-    #35040e 75%,
-    #351c31 100%
-  );
-  background-size: 300% 100%;
-  pointer-events: none;
-  z-index: 0;
-  animation: abstractFlow 10s ease-in-out infinite;
-}
 .page-header::after {
     content: "";
   position: absolute;
@@ -1470,15 +1453,6 @@ html {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-}
-
-.page-header-gradient {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: linear-gradient(transparent, #141414);
 }
 
 /* ─── Active Navigation Link ─── */

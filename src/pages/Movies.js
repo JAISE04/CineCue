@@ -156,11 +156,13 @@ const Movies = ({ globalSearchQuery = "" }) => {
 
   return (
     <>
+      {!globalSearchQuery && (
       <PageHeader
         title={getPageTitle()}
         subtitle={getPageSubtitle()}
-        itemCount={globalSearchQuery ? filteredMovies.length : movies.length}
+        itemCount={movies.length}
       />
+    )}
 
       <ControlsSection
         query={globalSearchQuery}
