@@ -11,6 +11,7 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const searchContainerRef = useRef(null);
+  const searchInputRef = useRef(null); // Add ref for input
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -40,7 +41,11 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
       setIsFocused(false);
 
       // Navigate to search results page if we're not on a searchable page
-      if (location.pathname !== "/" && location.pathname !== "/movies") {
+      if (
+        location.pathname !== "/" &&
+        location.pathname !== "/movies" &&
+        location.pathname !== "/tv-shows"
+      ) {
         navigate("/search");
       }
     }
@@ -49,8 +54,13 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setLocalQuery(value);
-    // Real-time search on Home and Movies pages
-    if (location.pathname === "/" || location.pathname === "/movies") {
+
+    // Real-time search on Home, Movies, and TV Shows pages
+    if (
+      location.pathname === "/" ||
+      location.pathname === "/movies" ||
+      location.pathname === "/tv-shows"
+    ) {
       onSearch(value);
     }
   };
@@ -82,7 +92,10 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
         setIsFocused(false);
       }
     };
@@ -143,24 +156,34 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
 
       <div className="navbar-right">
         <form onSubmit={handleSearchSubmit} className="search-form">
-          <div ref={searchContainerRef} className={`search-container ${isFocused ? "expanded" : ""}`}>
+          <div
+            ref={searchContainerRef}
+            className={`search-container ${isFocused ? "expanded" : ""}`}
+          >
             <div
               className="search-icon"
-              onClick={() => setIsFocused((prev) => !prev)}
+              onClick={() => {
+                setIsFocused(true);
+                // Focus the input field after the state update
+                setTimeout(() => {
+                  if (searchInputRef.current) {
+                    searchInputRef.current.focus();
+                  }
+                }, 100);
+              }}
             >
               <Search size={20} strokeWidth={2.5} color="white" />
             </div>
 
             <input
+              ref={searchInputRef}
               type="text"
               className="search-input"
-              placeholder="Search movies..."
+              placeholder="Search movies, TV shows..."
               value={localQuery}
               onChange={handleSearchChange}
               onFocus={() => setIsFocused(true)}
               onKeyDown={handleKeyDown}
-              
-              
             />
 
             {localQuery && isFocused && (

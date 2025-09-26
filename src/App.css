@@ -122,6 +122,13 @@ body {
   height: 36px;
 }
 
+.search-container.expanded {
+  width: 280px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #333;
+  border-radius: 20px;
+}
+
 .search-icon {
   cursor: pointer;
   display: flex;
@@ -170,13 +177,6 @@ body {
   border-color: transparent;
 }
 
-.search-container.expanded {
-  width: 240px;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid #e50914;
-  border-radius: 20px;
-}
-
 /* ─── Hero Section ─── */
 .hero-section {
   position: relative;
@@ -190,7 +190,8 @@ body {
 }
 
 /* Abstract flowing color transitions */
-.hero-section::before, .page-header::before{
+.hero-section::before,
+.page-header::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -341,7 +342,8 @@ body {
   letter-spacing: 1px;
 }
 
-.hero-gradient, .page-header-gradient {
+.hero-gradient,
+.page-header-gradient {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -1398,7 +1400,7 @@ html {
   isolation: isolate;
 }
 .page-header::after {
-    content: "";
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(

@@ -202,7 +202,7 @@ const TVShows = ({ globalSearchQuery = "", user }) => {
   // Unique genres - for now using series names as categories
   const genres = [...new Set(series.map((show) => show.title).filter(Boolean))];
 
-  // Filter series
+  // Filter series with same logic as Movies page
   let filteredSeries = series.filter((show) => {
     const matchesSearch = globalSearchQuery
       ? show.title?.toLowerCase().includes(globalSearchQuery.toLowerCase())
@@ -213,6 +213,17 @@ const TVShows = ({ globalSearchQuery = "", user }) => {
 
     return matchesSearch && matchesGenre;
   });
+
+  // Debug logging
+  console.log("TV Shows Debug:");
+  console.log("globalSearchQuery:", globalSearchQuery);
+  console.log("Total series:", series.length);
+  console.log("Series titles:", series.map((s) => s.title).slice(0, 5));
+  console.log("Filtered series:", filteredSeries.length);
+  console.log(
+    "Filtered titles:",
+    filteredSeries.map((s) => s.title).slice(0, 5)
+  );
 
   // Sort series
   if (sortBy === "Title (A-Z)") {
