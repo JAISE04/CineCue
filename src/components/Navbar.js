@@ -10,6 +10,7 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
   const [localQuery, setLocalQuery] = useState(searchQuery || "");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const searchContainerRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -48,7 +49,6 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setLocalQuery(value);
-
     // Real-time search on Home and Movies pages
     if (location.pathname === "/" || location.pathname === "/movies") {
       onSearch(value);
@@ -73,6 +73,17 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        setIsFocused(false);
       }
     };
 
@@ -132,14 +143,13 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
 
       <div className="navbar-right">
         <form onSubmit={handleSearchSubmit} className="search-form">
-          <div className={`search-container ${isFocused ? "expanded" : ""}`}>
-            <button
-              type="button"
+          <div ref={searchContainerRef} className={`search-container ${isFocused ? "expanded" : ""}`}>
+            <div
               className="search-icon"
               onClick={() => setIsFocused((prev) => !prev)}
             >
               <Search size={20} strokeWidth={2.5} color="white" />
-            </button>
+            </div>
 
             <input
               type="text"
@@ -149,8 +159,8 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
               onChange={handleSearchChange}
               onFocus={() => setIsFocused(true)}
               onKeyDown={handleKeyDown}
-              onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-              style={{ width: isFocused ? "200px" : "0px" }}
+              
+              
             />
 
             {localQuery && isFocused && (

@@ -76,7 +76,7 @@ function AppContent() {
         />
       </div>
 
-      <div className="app">
+      <div className={`app ${globalSearchQuery ? "search-active" : ""}`}>
         <Routes>
           <Route
             path="/"

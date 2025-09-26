@@ -27,7 +27,7 @@ body {
 }
 
 .navbar.scrolled {
-  background: rgba(20, 20, 20, 0.9) !important;
+  background: transparent !important;
   backdrop-filter: blur(10px) !important;
   padding: 12px 4% !important;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5) !important;
@@ -41,7 +41,7 @@ body {
 }
 
 .logo img {
-  height: 48px;
+  height: 30px;
   width: auto;
   object-fit: contain;
   transition: transform 0.2s ease;
@@ -115,22 +115,20 @@ body {
   display: flex;
   align-items: center;
   position: relative;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  width: 36px;
+  height: 36px;
 }
 
 .search-icon {
-  background: none;
-  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.search-icon:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  padding: 10px;
 }
 
 .search-icon svg {
@@ -147,19 +145,20 @@ body {
 }
 
 .search-input {
-  width: 0;
-  opacity: 0;
-  transition: all 0.3s ease;
-  padding: 8px 12px;
-  border: 1px solid #333;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.8);
+  border: none;
+  background: transparent;
   color: white;
   font-size: 14px;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  padding: 0;
+  transition: all 0.3s ease;
+  opacity: 0;
+  width: 0;
+}
+
+.search-container.expanded .search-input {
+  width: 100%;
+  opacity: 1;
+  padding: 8px 12px;
 }
 
 .search-input::placeholder {
@@ -168,13 +167,14 @@ body {
 
 .search-input:focus {
   outline: none;
-  border-color: #e50914;
+  border-color: transparent;
 }
 
-.search-container.expanded .search-input {
+.search-container.expanded {
   width: 240px;
-  opacity: 1;
-  right: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #e50914;
+  border-radius: 20px;
 }
 
 /* ─── Hero Section ─── */
@@ -477,8 +477,11 @@ body {
 
 /* ─── Main Content ─── */
 .app {
-  padding-top: 70px;
   min-height: 100vh;
+}
+
+.app.search-active {
+  padding-top: 70px;
 }
 
 .section-title {
