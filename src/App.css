@@ -14,22 +14,23 @@ body {
 
 /* ─── Navbar ─── */
 .navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, transparent);
-  padding: 8px 4%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  position: fixed !important;
+  top: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  background: transparent !important;
+  padding: 16px 4% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  transition: all 0.4s ease !important;
 }
 
 .navbar.scrolled {
-  background-color: #141414;
-  padding: 6px 4%;
+  background: rgba(20, 20, 20, 0.9) !important;
+  backdrop-filter: blur(10px) !important;
+  padding: 12px 4% !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5) !important;
 }
 
 .navbar-left {
@@ -180,11 +181,117 @@ body {
 .hero-section {
   position: relative;
   height: 60vh;
-  background: linear-gradient(135deg, #e50914 0%, #8b0000 50%, #141414 100%);
+  background: linear-gradient(90deg, #35040e 0%, #351c31 50%, #0e0619 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  isolation: isolate;
+}
+
+/* Abstract flowing color transitions */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #35040e 0%,
+    #351c31 25%,
+    #0e0619 50%,
+    #35040e 75%,
+    #351c31 100%
+  );
+  background-size: 300% 100%;
+  pointer-events: none;
+  z-index: 0;
+  animation: abstractFlow 10s ease-in-out infinite;
+}
+
+@keyframes abstractFlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  33.33% {
+    background-position: 50% 50%;
+  }
+  66.66% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Subtle shimmer overlay */
+.hero-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+        45deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.03) 50%,
+        transparent 65%
+      )
+      0/400% 400%,
+    radial-gradient(
+      circle at 70% 65%,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.25) 55%,
+      rgba(0, 0, 0, 0.6) 85%
+    ),
+    linear-gradient(
+      to top,
+      rgba(20, 20, 20, 0.9),
+      rgba(20, 20, 20, 0.1) 40%,
+      rgba(20, 20, 20, 0.8)
+    );
+  animation: shimmerFlow 35s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+  will-change: background-position;
+}
+
+@keyframes flowingEnergy {
+  0%,
+  100% {
+    background-position: 0% 0%, 100% 100%, 0% 100%, 100% 0%, center;
+  }
+  16.66% {
+    background-position: 15% 10%, 85% 90%, 10% 85%, 90% 15%, center;
+  }
+  33.33% {
+    background-position: 35% 25%, 65% 75%, 25% 65%, 75% 25%, center;
+  }
+  50% {
+    background-position: 55% 45%, 45% 55%, 45% 45%, 55% 45%, center;
+  }
+  66.66% {
+    background-position: 75% 65%, 25% 35%, 65% 25%, 35% 65%, center;
+  }
+  83.33% {
+    background-position: 90% 80%, 10% 20%, 80% 10%, 20% 80%, center;
+  }
+}
+
+@keyframes shimmerFlow {
+  0% {
+    background-position: -150% -150%, center, center;
+  }
+  100% {
+    background-position: 250% 250%, center, center;
+  }
+}
+
+/* Motion reduced */
+@media (prefers-reduced-motion: reduce) {
+  .hero-section::before {
+    animation: none;
+    background-position: 50% 50%;
+  }
+  .hero-section::after {
+    animation: none;
+  }
 }
 
 .hero-content {
@@ -239,8 +346,15 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100px;
-  background: linear-gradient(transparent, #141414);
+  height: 150px;
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 20, 20, 0) 0%,
+    rgba(20, 20, 20, 0.3) 30%,
+    rgba(20, 20, 20, 0.7) 70%,
+    #141414 100%
+  );
+  z-index: 2;
 }
 
 /* ─── Controls Section ─── */
@@ -442,7 +556,7 @@ body {
 
 .series-container.list .series-meta {
   font-size: 1rem;
-}/* ─── Series Card ─── */
+} /* ─── Series Card ─── */
 .series-card {
   background-color: #1a1a1a;
   border-radius: 8px;
