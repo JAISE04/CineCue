@@ -210,6 +210,29 @@
   transform: scale(1.1);
 }
 
+/* Movie Description Section */
+.modal-description {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-description-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.025em;
+}
+
+.modal-description-text {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin: 0;
+  text-align: justify;
+}
+
 @media (max-width: 480px) {
   .movie-modal-header {
     height: 200px;
@@ -226,5 +249,19 @@
   .modal-btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .modal-description {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+
+  .modal-description-title {
+    font-size: 1rem;
+  }
+
+  .modal-description-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 }

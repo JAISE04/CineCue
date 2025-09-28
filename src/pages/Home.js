@@ -64,6 +64,12 @@ const Home = ({ globalSearchQuery = "" }) => {
           language: row["Language"] || row["Languages"],
           duration: row["Duration"] || row["Runtime"],
           trailer: row["Trailer"],
+          description:
+            row["Description"] ||
+            row["Plot"] ||
+            row["Synopsis"] ||
+            row["Overview"] ||
+            "An exciting movie experience awaits you with captivating storytelling and memorable characters.",
         }));
         setMovies(movieList);
         setIsLoading(false);

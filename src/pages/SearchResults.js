@@ -43,6 +43,12 @@ const SearchResults = ({ searchQuery, onClearSearch, user }) => {
           language: row["Language"] || row["Languages"],
           duration: row["Duration"] || row["Runtime"],
           type: row["Type"] || "movie",
+          description:
+            row["Description"] ||
+            row["Plot"] ||
+            row["Synopsis"] ||
+            row["Overview"] ||
+            "An exciting movie experience awaits you with captivating storytelling and memorable characters.",
         }));
         setAllContent(contentList);
         setIsLoading(false);

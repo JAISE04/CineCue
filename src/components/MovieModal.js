@@ -135,6 +135,14 @@ const MovieModal = ({ movie, isOpen, onClose, user }) => {
               </button>
             </a>
           </div>
+
+          {/* Movie Description */}
+          {movie.description && (
+            <div className="modal-description">
+              <h3 className="modal-description-title">About this movie</h3>
+              <p className="modal-description-text">{movie.description}</p>
+            </div>
+          )}
         </div>
 
         {/* Video Player */}

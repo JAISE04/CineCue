@@ -66,6 +66,12 @@ const Movies = ({ globalSearchQuery = "" }) => {
             duration: row["Duration"] || row["Runtime"],
             trailer: row["Trailer"],
             type: row["Type"] || "movie",
+            description:
+              row["Description"] ||
+              row["Plot"] ||
+              row["Synopsis"] ||
+              row["Overview"] ||
+              "An exciting movie experience awaits you with captivating storytelling and memorable characters.",
           }))
           .filter((item) => item.type?.toLowerCase() === "movie" || !item.type);
         setMovies(movieList);
@@ -157,12 +163,12 @@ const Movies = ({ globalSearchQuery = "" }) => {
   return (
     <>
       {!globalSearchQuery && (
-      <PageHeader
-        title={getPageTitle()}
-        subtitle={getPageSubtitle()}
-        itemCount={movies.length}
-      />
-    )}
+        <PageHeader
+          title={getPageTitle()}
+          subtitle={getPageSubtitle()}
+          itemCount={movies.length}
+        />
+      )}
 
       <ControlsSection
         query={globalSearchQuery}
