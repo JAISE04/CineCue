@@ -10,6 +10,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showSuggestMovieModal, setShowSuggestMovieModal] = useState(false);
 
   useEffect(() => {
     // Get initial session
@@ -32,6 +33,8 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loading,
+    showSuggestMovieModal,
+    setShowSuggestMovieModal,
     signUp: (data) => supabase.auth.signUp(data),
     signIn: (data) => supabase.auth.signInWithPassword(data),
     signOut: () => supabase.auth.signOut(),

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { supabase } from "../supabaseClient";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import cinecueLogo from "../assets/cinecue-logo-transparent.png";
 import "../styles/Auth.css";
 
 const Auth = () => {
@@ -10,6 +9,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { signIn, setShowSuggestMovieModal } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,14 +17,12 @@ const Auth = () => {
     setMessage("");
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error } = await signIn({ email, password });
 
       if (error) {
         setMessage(error.message);
       } else {
+        setShowSuggestMovieModal(true);
         navigate("/");
       }
     } catch (err) {
@@ -47,9 +45,6 @@ const Auth = () => {
         flexDirection: "column",
       }}
     >
-      <header style={{ padding: "1.5rem 3rem" }}>
-        <img src={cinecueLogo} alt="CineCue" style={{ height: "45px" }} />
-      </header>
 
       <div
         style={{

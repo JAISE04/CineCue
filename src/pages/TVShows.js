@@ -248,11 +248,13 @@ const TVShows = ({ globalSearchQuery = "", user }) => {
 
   return (
     <>
-      <PageHeader
-        title={getPageTitle()}
-        subtitle={getPageSubtitle()}
-        itemCount={globalSearchQuery ? filteredSeries.length : series.length}
-      />
+      {!globalSearchQuery && (
+        <PageHeader
+          title={getPageTitle()}
+          subtitle={getPageSubtitle()}
+          itemCount={series.length}
+        />
+      )}
 
       <ControlsSection
         query={globalSearchQuery}

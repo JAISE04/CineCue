@@ -23,22 +23,19 @@ import { SeriesProvider } from "./context/SeriesContext";
 import { AuthProvider } from "./context/AuthContext";
 
 // Wrapper component to use location
+import SuggestMovieModal from "./components/SuggestMovieModal";
+import { useAuth } from "./context/AuthContext";
+
+// Wrapper component to use location
 function AppContent() {
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
-  const [user, setUser] = useState(null);
+  const { user, showSuggestMovieModal, setShowSuggestMovieModal } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
-    // Get initial user
-    supabase.auth.getUser().then(({ data: { user: currentUser } }) => {
-      setUser(currentUser);
-    });
-
     // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      // No need to set user here as AuthProvider does it
     });
 
     return () => subscription.unsubscribe();
@@ -55,6 +52,10 @@ function AppContent() {
 
   return (
     <>
+      {showSuggestMovieModal && (
+        <SuggestMovieModal onClose={() => setShowSuggestMovieModal(false)} />
+      )}
+
       {/* Desktop Navbar - Hidden on mobile */}
       <div className="hidden md:block">
         <Navbar
@@ -88,9 +89,7 @@ function AppContent() {
           />
           <Route
             path="/tv-shows"
-            element={
-              <TVShows globalSearchQuery={globalSearchQuery} user={user} />
-            }
+            element={<TVShows globalSearchQuery={globalSearchQuery} user={user} />}
           />
           <Route path="/my-list" element={<MyList />} />
           <Route
