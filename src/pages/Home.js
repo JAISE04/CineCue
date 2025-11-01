@@ -4,6 +4,7 @@ import HeroSection from "../components/HeroSection";
 import ControlsSection from "../components/ControlSection";
 import MoviesContainer from "../components/MoviesContainer";
 import NoResults from "../components/NoResults";
+
 import MovieModal from "../components/MovieModal";
 import { supabase } from "../supabaseClient";
 

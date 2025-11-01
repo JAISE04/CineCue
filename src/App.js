@@ -14,6 +14,10 @@ import Home from "./pages/Home";
 import Movies from "./pages/Movies";
 import TVShows from "./pages/TVShows";
 import MyList from "./pages/MyList";
+import Help from "./pages/Help";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import SearchResults from "./pages/SearchResults";
 import Auth from "./pages/Auth";
 import SignUp from "./pages/SignUp";
@@ -118,6 +122,10 @@ function AppContent() {
               </div>
             }
           />
+          <Route path="/help" element={<Help />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
         </Routes>
         {!location.pathname.includes("auth") &&
           !location.pathname.includes("signup") && <Footer />}
