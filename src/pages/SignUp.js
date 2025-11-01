@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "../supabaseClient";
 import { Link } from "react-router-dom";
-import cinecueLogo from "../assets/cinecue-logo-transparent.png";
 import "../styles/Auth.css";
 
 const SignUp = () => {
@@ -37,10 +36,7 @@ const SignUp = () => {
 
   return (
     <div className="auth-page">
-      <header style={{ padding: "1.5rem 3rem" }}>
-        <Link to="/">
-          <img src={cinecueLogo} alt="CineCue" style={{ height: "45px" }} />
-        </Link>
+      <header style={{ padding: "5rem 3rem" }}>
       </header>
 
       <div

@@ -22,7 +22,6 @@ const Auth = () => {
       if (error) {
         setMessage(error.message);
       } else {
-        setShowSuggestMovieModal(true);
         navigate("/");
       }
     } catch (err) {

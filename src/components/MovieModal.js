@@ -27,6 +27,13 @@ const MovieModal = ({ movie, isOpen, onClose, user }) => {
     useMovieList();
   const isInList = isInMyList(movie?.title);
 
+  document.addEventListener('keydown', function(event) {
+          if (event.key === "Escape") {
+            onClose();
+            setShowPlayer(false);
+          }
+        });
+
   if (!isOpen || !movie) return null;
 
   const trailerId = getYouTubeId(movie.trailer);
@@ -167,7 +174,7 @@ const MovieModal = ({ movie, isOpen, onClose, user }) => {
               src={`https://drive.google.com/file/d/${driveFileId}/preview`}
               title="Google Drive Video"
               frameBorder="0"
-              allow="autoplay; encrypted-media"
+              allow="autoplay; encrypted-media; accelerometer; clipboard-write; encrypted-media; gyroscope;"
               allowFullScreen
               width="80%"
               height="80%"
