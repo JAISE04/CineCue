@@ -339,11 +339,20 @@ body {
 }
 
 .hero-title {
-  font-size: 3.5rem;
-  font-weight: 700;
+  font-size: 3.8rem;
+  font-weight: 850;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  line-height: 1.2;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.6) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
 }
 
 .hero-subtitle {
@@ -1473,10 +1482,19 @@ html {
 
 .page-title {
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 900;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  line-height: 1.2;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.6) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
 }
 
 .page-subtitle {
