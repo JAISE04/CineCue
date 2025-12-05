@@ -24,18 +24,6 @@ const ControlsSection = ({
   setViewMode,
   pageType = "home",
 }) => {
-  const { user, setShowSuggestMovieModal } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSuggestClick = () => {
-    if (user) {
-      setShowSuggestMovieModal(true);
-    } else {
-      toast.error("Please sign in to suggest a movie");
-      navigate("/auth");
-    }
-  };
-
   const getSortOptions = () => {
     if (pageType === "tv-shows") {
       return ["Title (A-Z)", "Title (Z-A)", "Most Episodes", "Most Seasons"];
@@ -121,19 +109,6 @@ const ControlsSection = ({
             <List size={18} />
           </button>
         </div>
-        <button onClick={handleSuggestClick} className="suggest-button"
-        style={{ background: "#e50914",
-                    padding: "10px 20px",
-                    borderRadius: "4px",
-                    border: "none",
-                    color: "white",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    display: "flex",
-                    marginLeft: "10px",}}>
-          Suggest a movie
-        </button>
       </div>
     </div>
   );

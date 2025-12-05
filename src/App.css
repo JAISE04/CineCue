@@ -16,7 +16,10 @@ body {
 .navbar {
   position: fixed !important;
   top: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
   width: 100% !important;
+  max-width: 1400px !important;
   z-index: 1000 !important;
   background: transparent !important;
   padding: 16px 4% !important;
@@ -27,10 +30,19 @@ body {
 }
 
 .navbar.scrolled {
-  background: transparent !important;
-  backdrop-filter: blur(10px) !important;
-  padding: 12px 4% !important;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5) !important;
+  top: 10px !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border-radius: 100px !important;
+  padding: 10px 3% !important;
+  width: 50% !important;
+  transform: translateX(-50%) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+}
+
+.navbar.scrolled.search-expanded {
+  width: 70% !important;
 }
 
 .navbar-left {
@@ -130,7 +142,7 @@ body {
 }
 
 /* Search flow indicator */
-.search-container.expanded::after {
+.search-container.expanded::after{
   content: "";
   position: absolute;
   width: 100%;
@@ -339,20 +351,11 @@ body {
 }
 
 .hero-title {
-  font-size: 3.8rem;
-  font-weight: 850;
+  font-size: 3.5rem;
+  font-weight: 700;
   margin-bottom: 1rem;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  background: linear-gradient(
-    to bottom,
-    #ffffff 0%,
-    rgba(255, 255, 255, 0.6) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: none;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.2;
 }
 
 .hero-subtitle {
@@ -1482,19 +1485,10 @@ html {
 
 .page-title {
   font-size: 3rem;
-  font-weight: 900;
+  font-weight: 700;
   margin-bottom: 1rem;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  background: linear-gradient(
-    to bottom,
-    #ffffff 0%,
-    rgba(255, 255, 255, 0.6) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: none;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.2;
 }
 
 .page-subtitle {

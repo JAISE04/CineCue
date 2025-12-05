@@ -33,7 +33,6 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
   const isActiveRoute = (path) => {
     return location.pathname === path;
   };
-
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (localQuery.trim()) {
@@ -123,9 +122,8 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
       .toUpperCase()
       .slice(0, 2);
   };
-
   return (
-    <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
+    <nav className={`navbar ${isScrolled ? "scrolled" : ""} ${isFocused ? "search-expanded" : ""}`}>
       <div className="navbar-left">
         <Link to="/" className="logo" onClick={onClearSearch}>
           <img src={logo} height={50} alt="CineCue Logo" />
@@ -324,6 +322,7 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
       </div>
     </nav>
   );
+  
 };
 
 export default Navbar;
