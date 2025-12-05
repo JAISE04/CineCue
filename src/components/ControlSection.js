@@ -1,9 +1,6 @@
 import React from "react";
-import { Filter, Calendar, Grid, List, Globe } from "lucide-react";
+import { Filter, Calendar, Globe } from "lucide-react";
 import FilterDropdown from "./FilterDropdown";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 
 const ControlsSection = ({
   query,
@@ -93,21 +90,6 @@ const ControlsSection = ({
             onChange={setSortBy}
             icon={Filter}
           />
-        </div>
-
-        <div className="view-toggle">
-          <button
-            className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
-            onClick={() => setViewMode("grid")}
-          >
-            <Grid size={18} />
-          </button>
-          <button
-            className={`view-btn ${viewMode === "list" ? "active" : ""}`}
-            onClick={() => setViewMode("list")}
-          >
-            <List size={18} />
-          </button>
         </div>
       </div>
     </div>
