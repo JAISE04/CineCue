@@ -11,6 +11,7 @@ import {
   List,
   LogOut,
   Settings,
+  Heart,
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/cinecue-logo-transparent.png";
@@ -55,6 +56,7 @@ const MobileNavbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
     { path: "/movies", label: "Movies", icon: Film },
     { path: "/tv-shows", label: "TV Shows", icon: Tv },
     { path: "/my-list", label: "My List", icon: List },
+    { path: "/donate", label: "Donate", icon: Heart, subtle: true },
   ];
 
   const handleSearchSubmit = (e) => {

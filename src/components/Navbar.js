@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, User, X, LogOut, Settings } from "lucide-react";
+import { Search, User, X, LogOut, Settings, Heart } from "lucide-react";
 import logo from "../assets/cinecue-logo-transparent.png";
 import { supabase } from "../supabaseClient";
 
@@ -147,6 +147,12 @@ const Navbar = ({ onSearch, searchQuery, onClearSearch, user }) => {
           <li className={isActiveRoute("/my-list") ? "active" : ""}>
             <Link to="/my-list" onClick={onClearSearch}>
               My List
+            </Link>
+          </li>
+          <li className={isActiveRoute("/donate") ? "active" : ""}>
+            <Link to="/donate" onClick={onClearSearch} className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition-colors">
+              <Heart size={14} className="text-red-500" fill="currentColor" />
+              <span className="text-sm">Donate</span>
             </Link>
           </li>
         </ul>

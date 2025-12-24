@@ -18,6 +18,7 @@ import Help from "./pages/Help";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Donate from "./pages/Donate";
 import SearchResults from "./pages/SearchResults";
 import Auth from "./pages/Auth";
 import SignUp from "./pages/SignUp";
@@ -38,7 +39,9 @@ function AppContent() {
 
   useEffect(() => {
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       // No need to set user here as AuthProvider does it
     });
 
@@ -93,7 +96,9 @@ function AppContent() {
           />
           <Route
             path="/tv-shows"
-            element={<TVShows globalSearchQuery={globalSearchQuery} user={user} />}
+            element={
+              <TVShows globalSearchQuery={globalSearchQuery} user={user} />
+            }
           />
           <Route path="/my-list" element={<MyList />} />
           <Route
@@ -126,6 +131,7 @@ function AppContent() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/donate" element={<Donate />} />
         </Routes>
         {!location.pathname.includes("auth") &&
           !location.pathname.includes("signup") && <Footer />}
