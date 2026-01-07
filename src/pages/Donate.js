@@ -60,12 +60,12 @@ const Donate = () => {
     switch (method) {
       case "upi":
         // UPI deep link - opens UPI apps directly
-        const upiLink = `upi://pay?pa=8296005662@superyes&pn=CineCue&am=${amount}&cu=INR&tn=Donation%20to%20CineCue`;
+        const upiLink = `upi://pay?pa=jaisejohn69@okicici&pn=CineCue&am=${amount}&cu=INR&tn=Donation%20to%20CineCue`;
         window.location.href = upiLink;
         break;
       case "gpay":
         // Google Pay UPI link
-        const gpayLink = `tez://upi/pay?pa=8296005662@superyes&pn=CineCue&am=${amount}&cu=INR&tn=Donation%20to%20CineCue`;
+        const gpayLink = `tez://upi/pay?pa=jaisejohn69@okicici&pn=CineCue&am=${amount}&cu=INR&tn=Donation%20to%20CineCue`;
         window.location.href = gpayLink;
         break;
       default:
@@ -197,7 +197,7 @@ const Donate = () => {
           </h3>
           <div className="inline-block bg-white p-4 rounded-xl mb-4">
             <img
-              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=8296005662@superyes%26pn=CineCue${
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=jaisejohn69@okicici%26pn=CineCue${
                 getFinalAmount() > 0 ? `%26am=${getFinalAmount()}` : ""
               }%26cu=INR%26tn=Donation%20to%20CineCue`}
               alt="UPI QR Code for CineCue"
@@ -209,7 +209,7 @@ const Donate = () => {
               Amount: ₹{getFinalAmount()}
             </p>
           )}
-          <p className="text-gray-400 text-sm">UPI ID: 8296005662@superyes</p>
+          <p className="text-gray-400 text-sm">UPI ID: jai*****69@oki**ci</p>
         </div>
 
         {/* What Your Donation Supports */}
